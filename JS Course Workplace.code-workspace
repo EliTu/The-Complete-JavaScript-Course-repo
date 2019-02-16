@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "5-advanced-JS/starter"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "complete-javascript-course"
+	}
+}

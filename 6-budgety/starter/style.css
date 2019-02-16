@@ -33,9 +33,10 @@ body {
 
 .top {
     height: 40vh;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(back.png);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    url(https://source.unsplash.com/IJ25m7fXqtk/1400x800);
     background-size: cover;
-    background-position: center;
+    background-position: bottom;
     position: relative;
 }
 
