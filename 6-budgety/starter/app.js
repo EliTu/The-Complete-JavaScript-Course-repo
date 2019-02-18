@@ -35,29 +35,25 @@ const budgetController = (() => {
     return {
 
         // Adding an item to the data storage
-        addItem: (type, des, val) => {
-            let newItem, ID;
+        addNewItem: (type, des, val) => {
+            let newItem, idNumber;
 
             // Create a new and unique ID for each new item based on the number of the last item in the array
-            if (budgetData.allItems[type].length > 0) {
-                ID = budgetData.allItems[type][budgetData.allItems[type].length - 1].id + 1;
-            } else {
-                ID = 0;
-            }
+            budgetData.allItems[type].length > 0 ?
+                idNumber = budgetData.allItems[type][budgetData.allItems[type].length - 1].id + 1 :
+                idNumber = 0;
 
             // New item based on the type - expense or income
-            if (type === 'exp') {
-                newItem = new Expense(ID, des, val);
-            } else if (type === 'inc') {
-                newItem = new Income(ID, des, val);
-            }
+            type === 'exp' ?
+                newItem = new Expense(idNumber, des, val) :
+                newItem = new Income(idNumber, des, val);
 
             // Push new item into the budgetData array based on the type
             budgetData.allItems[type].push(newItem);
             return newItem;
         },
 
-        viewData: () => console.log(budgetData)
+        // viewData: () => console.log(budgetData) // For testing
 
     };
 
@@ -119,9 +115,7 @@ const appController = ((budgetCtrl, UICtrl) => {
 
         // 2. Update the data - Update the item to the budget controller based on the inputValues method variables.
 
-        const newItem = budgetCtrl.addItem(inputValues.typeVal, inputValues.descriptionVal, inputValues.amountVal); // The method arguments correspond to the budgetController addItem function parameters of (type, des, val).
-        // console.log(newItem);
-        // budgetCtrl.viewData();
+        const newItem = budgetCtrl.addNewItem(inputValues.typeVal, inputValues.descriptionVal, inputValues.amountVal); // The method arguments correspond to the budgetController addItem function parameters of (type, des, val).
 
         // TODO 3. Calculate the budget.
 
