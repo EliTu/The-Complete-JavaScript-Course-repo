@@ -53,8 +53,6 @@ const budgetController = (() => {
             return newItem;
         },
 
-        // viewData: () => console.log(budgetData) // For testing
-
     };
 
 })();
@@ -113,6 +111,26 @@ const UIController = (() => {
 
         },
 
+        // Clear the input fields after a new item has been added
+        clearField: () => {
+            // Select the required input fields
+            const fields = document.querySelectorAll(`${DOMClasses.inputDescription}, ${DOMClasses.inputAmount}`);
+
+            // Loop over them and clear each one.
+            fields.forEach((field) => field.value = '');
+
+            // Return the focus to the 'description' input
+            fields[0].focus();
+        },
+
+        // If the input fields are clear do not add anything
+        // alertEmptyField: (desc, val) => {
+        //     if (desc === '' || val === '') {
+        //         console.log('Hi, I work!');
+        //         return;
+        //     }
+        // },
+
         // Granting access to the DOMClasses variable to the outside scope.
         getDOMClasses: () => {
             return DOMClasses;
@@ -141,14 +159,18 @@ const appController = ((budgetCtrl, UICtrl) => {
 
     // Main functionality control function - Add income/expense items:
     const addItem = () => {
-
         // 1. Get the input data(type, description, amount):
 
         const inputValues = UIController.getValues(); //Method in the UIController module. Returns an object of all the values of the input fields.
 
-        // 2. Update the data - Update the item to the budget controller based on the inputValues method variables.
+        // Temporary - Make sure no empty items are being added
+        if (inputValues.descriptionVal === '' || inputValues.amountVal === '') return;
 
-        const newItem = budgetCtrl.addNewItem(inputValues.typeVal, inputValues.descriptionVal, inputValues.amountVal); // The method arguments correspond to the budgetController addItem function parameters of (type, des, val).
+        // 2. Update the data - Update the item to the budget controller based on the inputValues method variables.
+        const newItem = budgetCtrl.addNewItem(inputValues.typeVal, inputValues.descriptionVal, inputValues.amountVal); // The method arguments correspond to the budgetController addNewItem function parameters of (type, des, val).
+
+        // Clear the fields after adding an ew item:
+        const clear = UICtrl.clearField();
 
         // TODO 3. Calculate the budget.
 
@@ -171,8 +193,11 @@ const appController = ((budgetCtrl, UICtrl) => {
 // Call init function:
 appController.init();
 
-/** Code Trash Bin:
- * 
+
+
+
+/* *Code Trash Bin:
+
  // Jonas's version of updating items in the UI:
 
   let html, element, newHtml;
