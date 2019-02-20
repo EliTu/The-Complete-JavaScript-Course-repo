@@ -109,9 +109,8 @@ const UIController = (() => {
             listType.appendChild(newDiv);
 
             // If its an income item, remove the percentage indicator div
-            if (type !== 'exp') {
-                document.querySelector('.item__percentage').remove();
-            }
+            if (type !== 'exp') document.querySelector('.item__percentage').remove();
+
         },
 
         // Granting access to the DOMClasses variable to the outside scope.
