@@ -8,6 +8,9 @@
 		}
 	],
 	"settings": {
-		"liveServer.settings.multiRootWorkspaceName": "complete-javascript-course"
+		"liveServer.settings.multiRootWorkspaceName": "complete-javascript-course",
+		"cSpell.words": [
+			"clearfix"
+		]
 	}
 }

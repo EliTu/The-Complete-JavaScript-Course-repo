@@ -67,13 +67,16 @@ const UIController = (() => {
         inputType: '.add__type',
         inputDescription: '.add__description',
         inputAmount: '.add__value',
-        inputBtn: '.add__btn'
+        inputBtn: '.add__btn',
+        inc: '.income__list',
+        exp: '.expenses__list'
     };
 
     // Public functions:
     return { // returns an object that we can use publicly.
 
-        getValues: () => { // Method that returns an object that selects the values of the input elements.
+        // Method that returns an object that selects the values of the input elements.
+        getValues: () => {
             return {
                 typeVal: document.querySelector(DOMClasses.inputType).value, // Moves between income(+) and expanses(-)
                 descriptionVal: document.querySelector(DOMClasses.inputDescription).value,
@@ -81,11 +84,42 @@ const UIController = (() => {
             };
         },
 
-        getDOMClasses: () => { // Granting access to the DOMClasses variable to the outside scope.
+        // Adding and displaying an item at the app UI
+        addListItem: (obj, type) => {
+            // DOM list by item type and create a new div for new item
+            const listType = document.querySelector(DOMClasses[type]);
+            const newDiv = document.createElement('div');
+
+            // The new item template
+            newDiv.innerHTML = `
+            <div class="item clearfix" id="expense-${obj.id}">
+            <div class="item__description">${obj.description} </div> 
+            <div class="right clearfix">
+            <div class="item__value">${obj.value} </div> 
+            <div class="item__percentage">2%</div>
+            <div class="item__delete">
+            <button class="item__delete--btn"> 
+            <i class="ion-ios-close-outline"></i> </button>
+            </div> 
+            </div> 
+            </div>
+            `;
+
+            // Sort a new item inside the corresponding list
+            listType.appendChild(newDiv);
+
+            // If its an income item, remove the percentage indicator div
+            if (type !== 'exp') {
+                document.querySelector('.item__percentage').remove();
+            }
+        },
+
+        // Granting access to the DOMClasses variable to the outside scope.
+        getDOMClasses: () => {
             return DOMClasses;
         }
-    };
 
+    };
 })();
 
 //*  Controller Module:
@@ -119,7 +153,8 @@ const appController = ((budgetCtrl, UICtrl) => {
 
         // TODO 3. Calculate the budget.
 
-        // TODO 4. Update the UI - Update the item to the UI controller.
+        // 4. Update the UI - Update the item to the UI controller.
+        const addToList = UICtrl.addListItem(newItem, inputValues.typeVal);
     }
 
     // Public functions:
@@ -136,3 +171,52 @@ const appController = ((budgetCtrl, UICtrl) => {
 
 // Call init function:
 appController.init();
+
+/** Code Trash Bin:
+ * 
+ // Jonas's version of updating items in the UI:
+
+  let html, element, newHtml;
+  // Create HTML string with placeholder text:
+
+  if (type === 'inc') {
+      element = DOMClasses.incomeContainer;
+      html = `
+                <div class="item clearfix" id="income-%id%">
+                  <div class="item__description">%description%</div>
+                     <div class="right clearfix">
+                           <div class="item__value">%value%</div>
+                         <div class="item__delete">
+                             <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                         </div>
+                      </div>
+                 </div>
+                 `;
+  } else {
+      element = DOMClasses.ExpenseContainer;
+      html = `
+                <div class="item clearfix" id="expense-%id%">
+                  <div class="item__description">%description%</div>
+                 <div class="right clearfix">
+                     <div class="item__value">%value%</div>
+                      <div class="item__percentage">21%</div>
+                      <div class="item__delete">
+                         <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
+                      </div>
+                    </div>
+                 </div>
+                 `;
+  }
+
+  // Replace the placeholder with and acutal data
+
+  newHtml = html.replace(`%id%`, obj.id); // Replace id placeholder with an actual item id.
+  newHtml = newHtml.replace(`%description%`, obj.description); // Replace the description in the new variable (so we can override the other placeholders) with an actual item description.
+  newHtml = newHtml.replace(`%value%`, obj.value); // Replace placeholder value with an acutal value.
+
+
+  // Insert the HTML into the DOM
+  document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
+  }
+}
+*/
