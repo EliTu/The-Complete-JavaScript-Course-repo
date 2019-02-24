@@ -53,6 +53,26 @@ const budgetController = (() => {
             return newItem;
         },
 
+        // Calculating the data 
+        calcData: (type) => {
+
+            // Get the total item sum by type
+            const getSum = budgetData.allItems[type].reduce((total, item) => {
+                return total + item.value;
+            }, 0);
+
+            // Sort the total item sum at the total data storage
+            if (type === 'inc') {
+                budgetData.totals.inc = getSum;
+            } else {
+                budgetData.totals.exp = getSum;
+            }
+
+            // Sum up the totals = income - expenses. 
+            let updateTotal = budgetData.totals.inc - budgetData.totals.exp;
+            console.log(updateTotal);
+            console.log(budgetData.totals);
+        }
     };
 
 })();
@@ -78,7 +98,7 @@ const UIController = (() => {
             return {
                 typeVal: document.querySelector(DOMClasses.inputType).value, // Moves between income(+) and expanses(-)
                 descriptionVal: document.querySelector(DOMClasses.inputDescription).value,
-                amountVal: document.querySelector(DOMClasses.inputAmount).value
+                amountVal: parseFloat(document.querySelector(DOMClasses.inputAmount).value) // Convert the value from a string to a floating point number
             };
         },
 
@@ -113,7 +133,7 @@ const UIController = (() => {
 
         // Clear the input fields after a new item has been added
         clearField: () => {
-            // Select the required input fields
+            // Select the input fields and output a node list
             const fields = document.querySelectorAll(`${DOMClasses.inputDescription}, ${DOMClasses.inputAmount}`);
 
             // Loop over them and clear each one.
@@ -159,24 +179,38 @@ const appController = ((budgetCtrl, UICtrl) => {
 
     // Main functionality control function - Add income/expense items:
     const addItem = () => {
-        // 1. Get the input data(type, description, amount):
+        // Get the input data(type, description, amount):
 
         const inputValues = UIController.getValues(); //Method in the UIController module. Returns an object of all the values of the input fields.
 
-        // Temporary - Make sure no empty items are being added
-        if (inputValues.descriptionVal === '' || inputValues.amountVal === '') return;
+        // Make sure no empty items or NaN values are being added
+        if (inputValues.descriptionVal === '' || isNaN(inputValues.amountVal) || inputValues.amountVal === 0) return;
 
-        // 2. Update the data - Update the item to the budget controller based on the inputValues method variables.
+        // TODO - Display warning & success messages upon a press
+
+        // Update the data - Update the item to the budget controller based on the inputValues method variables.
         const newItem = budgetCtrl.addNewItem(inputValues.typeVal, inputValues.descriptionVal, inputValues.amountVal); // The method arguments correspond to the budgetController addNewItem function parameters of (type, des, val).
 
         // Clear the fields after adding an ew item:
         const clear = UICtrl.clearField();
 
-        // TODO 3. Calculate the budget.
+        // TODO Calculate the budget.
+        const update = updateBudget(inputValues.typeVal);
 
-        // 4. Update the UI - Update the item to the UI controller.
+        // Update the UI - Update the item to the UI controller.
         const addToList = UICtrl.addListItem(newItem, inputValues.typeVal);
-    }
+
+    };
+
+    const updateBudget = (type) => {
+
+        // Calculate the budget
+        budgetCtrl.calcData(type);
+
+        // Return the budget
+
+        // Display the budget on the UI
+    };
 
     // Public functions:
     return {
