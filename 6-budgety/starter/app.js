@@ -28,7 +28,11 @@ const budgetController = (() => {
         totals: {
             exp: 0,
             inc: 0
-        }
+        },
+
+        budgetTotal: 0,
+
+        percentage: -1
     };
 
     // Public functions:
@@ -56,12 +60,12 @@ const budgetController = (() => {
         // Calculating the data 
         calcData: (type) => {
 
-            // Get the total item sum by type
+            // Get the total item sum by type - inc or exp
             const getSum = budgetData.allItems[type].reduce((total, item) => {
-                return total + item.value;
+                return total += item.value;
             }, 0);
 
-            // Sort the total item sum at the total data storage
+            // Sort the total item sum at the total data
             if (type === 'inc') {
                 budgetData.totals.inc = getSum;
             } else {
@@ -69,8 +73,13 @@ const budgetController = (() => {
             }
 
             // Sum up the totals = income - expenses. 
-            let updateTotal = budgetData.totals.inc - budgetData.totals.exp;
-            console.log(updateTotal);
+            budgetData.budgetTotal = budgetData.totals.inc - budgetData.totals.exp;
+
+            // Calculate the (rounded) % of the expenses out of the total income, if there are income items
+            budgetData.totals.inc > 0 ? budgetData.percentage = Math.floor((budgetData.totals.exp / budgetData.totals.inc) * 100) : budgetData.percentage = -1;
+
+            console.log(budgetData.budgetTotal);
+            console.log(budgetData.percentage);
             console.log(budgetData.totals);
         }
     };
@@ -98,7 +107,7 @@ const UIController = (() => {
             return {
                 typeVal: document.querySelector(DOMClasses.inputType).value, // Moves between income(+) and expanses(-)
                 descriptionVal: document.querySelector(DOMClasses.inputDescription).value,
-                amountVal: parseFloat(document.querySelector(DOMClasses.inputAmount).value) // Convert the value from a string to a floating point number
+                amountVal: parseFloat(document.querySelector(DOMClasses.inputAmount).value) // Convert the value from a string to a floating point number 
             };
         },
 
@@ -143,14 +152,6 @@ const UIController = (() => {
             fields[0].focus();
         },
 
-        // If the input fields are clear do not add anything
-        // alertEmptyField: (desc, val) => {
-        //     if (desc === '' || val === '') {
-        //         console.log('Hi, I work!');
-        //         return;
-        //     }
-        // },
-
         // Granting access to the DOMClasses variable to the outside scope.
         getDOMClasses: () => {
             return DOMClasses;
@@ -176,7 +177,6 @@ const appController = ((budgetCtrl, UICtrl) => {
             addItem(e);
         });
     }
-
     // Main functionality control function - Add income/expense items:
     const addItem = () => {
         // Get the input data(type, description, amount):
@@ -276,5 +276,13 @@ appController.init();
   // Insert the HTML into the DOM
   document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
   }
+}
+
+If the input fields are clear do not add anything
+alertEmptyField: (desc, val) => {
+    if (desc === '' || val === '') {
+        console.log('Hi, I work!');
+        return;
+    }
 }
 */
