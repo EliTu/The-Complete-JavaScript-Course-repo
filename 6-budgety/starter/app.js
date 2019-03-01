@@ -76,11 +76,23 @@ const budgetController = (() => {
             budgetData.budgetTotal = budgetData.totals.inc - budgetData.totals.exp;
 
             // Calculate the (rounded) % of the expenses out of the total income, if there are income items
-            budgetData.totals.inc > 0 ? budgetData.percentage = Math.floor((budgetData.totals.exp / budgetData.totals.inc) * 100) : budgetData.percentage = -1;
+            budgetData.totals.inc > 0 ?
+                budgetData.percentage = Math.floor((budgetData.totals.exp / budgetData.totals.inc) * 100) :
+                budgetData.percentage = -1;
 
-            console.log(budgetData.budgetTotal);
-            console.log(budgetData.percentage);
-            console.log(budgetData.totals);
+            // console.log(budgetData.budgetTotal);
+            // console.log(budgetData.percentage);
+            // console.log(budgetData.totals);
+        },
+
+        // Return the data that has been calculated
+        getData: () => {
+            return {
+                totalExp: budgetData.totals.exp,
+                totalInc: budgetData.totals.inc,
+                totalBudget: budgetData.budgetTotal,
+                percentage: budgetData.percentage
+            }
         }
     };
 
@@ -91,12 +103,20 @@ const budgetController = (() => {
 const UIController = (() => {
 
     const DOMClasses = { // Object containing the class names of DOM elements.
+
+        // Input fields
         inputType: '.add__type',
         inputDescription: '.add__description',
         inputAmount: '.add__value',
         inputBtn: '.add__btn',
+        // Item list
         inc: '.income__list',
-        exp: '.expenses__list'
+        exp: '.expenses__list',
+        // Top section budget values
+        totalVal: '.budget__value',
+        incVal: '.budget__income--value',
+        expVal: '.budget__expenses--value',
+        percent: '.budget__expenses--percentage'
     };
 
     // Public functions:
@@ -123,7 +143,7 @@ const UIController = (() => {
             <div class="item__description">${obj.description} </div> 
             <div class="right clearfix">
             <div class="item__value">${obj.value} </div> 
-            <div class="item__percentage">2%</div>
+            <div class="item__percentage"></div>
             <div class="item__delete">
             <button class="item__delete--btn"> 
             <i class="ion-ios-close-outline"></i> </button>
@@ -150,6 +170,18 @@ const UIController = (() => {
 
             // Return the focus to the 'description' input
             fields[0].focus();
+        },
+
+        // Display the calculated budget in the UI: income, expense, total and percentage
+        displayBudget: (obj) => {
+            document.querySelector(DOMClasses.totalVal).textContent = obj.totalBudget;
+            document.querySelector(DOMClasses.expVal).textContent = obj.totalExp;
+            document.querySelector(DOMClasses.incVal).textContent = obj.totalInc;
+            // If the calculated % is greater than 0 or defaulted:
+            obj.percentage > 0 ?
+                document.querySelector(DOMClasses.percent).textContent = `${obj.percentage}%` :
+                document.querySelector(DOMClasses.percent).textContent = '---';
+
         },
 
         // Granting access to the DOMClasses variable to the outside scope.
@@ -194,7 +226,7 @@ const appController = ((budgetCtrl, UICtrl) => {
         // Clear the fields after adding an ew item:
         const clear = UICtrl.clearField();
 
-        // TODO Calculate the budget.
+        // Calculate the budget.
         const update = updateBudget(inputValues.typeVal);
 
         // Update the UI - Update the item to the UI controller.
@@ -207,9 +239,11 @@ const appController = ((budgetCtrl, UICtrl) => {
         // Calculate the budget
         budgetCtrl.calcData(type);
 
-        // Return the budget
+        // Return the calculated budget
+        const calculatedBudget = budgetCtrl.getData();
 
         // Display the budget on the UI
+        UICtrl.displayBudget(calculatedBudget);
     };
 
     // Public functions:
@@ -226,7 +260,6 @@ const appController = ((budgetCtrl, UICtrl) => {
 
 // Call init function:
 appController.init();
-
 
 
 
