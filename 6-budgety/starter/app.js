@@ -80,9 +80,9 @@ const budgetController = (() => {
                 budgetData.percentage = Math.floor((budgetData.totals.exp / budgetData.totals.inc) * 100) :
                 budgetData.percentage = -1;
 
-            // console.log(budgetData.allItems);
-            // console.log(budgetData.percentage);
-            // console.log(budgetData.totals);
+            console.log(budgetData.allItems);
+            console.log(budgetData.percentage);
+            console.log(budgetData.totals);
         },
 
         // Return the data that has been calculated
@@ -93,6 +93,16 @@ const budgetController = (() => {
                 totalBudget: budgetData.budgetTotal,
                 percentage: budgetData.percentage
             }
+        },
+
+        // Remove items from the budgetData object:
+        deleteBudgetItem: (type, id) => {
+
+            // Looping over all the items in the array, if the id matches the selected item id, remove the item:
+            const itemsArr = budgetData.allItems[type].forEach((item, i) => {
+                if (id === item.id) budgetData.allItems[type].splice(i, 1);
+            });
+            console.log(budgetData.allItems);
         }
     };
 
@@ -184,6 +194,9 @@ const UIController = (() => {
 
         },
 
+        // Remove items from the UI:
+
+
         // Granting access to the DOMClasses variable to the outside scope.
         getDOMClasses: () => {
             return DOMClasses;
@@ -245,12 +258,13 @@ const appController = ((budgetCtrl, UICtrl) => {
         // If the target has an ID number:
         if (itemId) {
             // Split the ID at the '-' to have type and number:
-            const idType = itemId.split('-')[0];
-            const idNum = itemId.split('-')[1];
-
-            // Remove the item from the UI:
+            const idType = itemId.split('-')[0]; // inc or exp
+            const idNum = parseInt(itemId.split('-')[1]); // the number part of item id.
 
             // Remove the item from the data object:
+            budgetCtrl.deleteBudgetItem(idType, idNum);
+
+            // Remove the item from the UI:
 
             // Update the budget UI:
 
@@ -342,4 +356,16 @@ alertEmptyField: (desc, val) => {
         return;
     }
 }
+
+
+  Looping over all of the items with an id inside the inc or exp array and returning a new array:
+  const itemIdArr = budgetData.allItems[type].map((item) => {
+      return item.id;
+  });
+
+  // Getting the index position of the id of the selected item:
+  const index = itemIdArr.indexOf(id);
+
+  // If the index is on the array, remove the item from the original array:
+  if (index !== -1) budgetData.allItems[type].splice(index, 1);
 */
