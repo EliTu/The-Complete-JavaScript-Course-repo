@@ -57,7 +57,7 @@ const budgetController = (() => {
             return newItem;
         },
 
-        // Calculating the data 
+        // Calculating the income and expense values 
         calcData: (type) => {
 
             // Get the total item sum by type - inc or exp
@@ -80,7 +80,7 @@ const budgetController = (() => {
                 budgetData.percentage = Math.floor((budgetData.totals.exp / budgetData.totals.inc) * 100) :
                 budgetData.percentage = -1;
 
-            // console.log(budgetData.budgetTotal);
+            // console.log(budgetData.allItems);
             // console.log(budgetData.percentage);
             // console.log(budgetData.totals);
         },
@@ -110,6 +110,7 @@ const UIController = (() => {
         inputAmount: '.add__value',
         inputBtn: '.add__btn',
         // Item list
+        container: '.container',
         inc: '.income__list',
         exp: '.expenses__list',
         // Top section budget values
@@ -139,7 +140,7 @@ const UIController = (() => {
 
             // The new item template
             newDiv.innerHTML = `
-            <div class="item clearfix" id="expense-${obj.id}">
+            <div class="item clearfix" id="${type}-${obj.id}">
             <div class="item__description">${obj.description} </div> 
             <div class="right clearfix">
             <div class="item__value">${obj.value} </div> 
@@ -157,7 +158,6 @@ const UIController = (() => {
 
             // If its an income item, remove the percentage indicator div
             if (type !== 'exp') document.querySelector('.item__percentage').remove();
-
         },
 
         // Clear the input fields after a new item has been added
@@ -208,6 +208,9 @@ const appController = ((budgetCtrl, UICtrl) => {
             if (e.keyCode !== 13) return; // If not 'Enter' key, do not execute.
             addItem(e);
         });
+
+        // Using event delegation to attach event listener to the 'delete' button:
+        const removeItem = document.querySelector(DOM.container).addEventListener('click', deleteItem);
     }
     // Main functionality control function - Add income/expense items:
     const addItem = () => {
@@ -231,9 +234,30 @@ const appController = ((budgetCtrl, UICtrl) => {
 
         // Update the UI - Update the item to the UI controller.
         const addToList = UICtrl.addListItem(newItem, inputValues.typeVal);
-
     };
 
+    // Delete items from the list event listener function
+    const deleteItem = (e) => {
+
+        // Getting the value of the id of the item that is being clicked:
+        const itemId = e.target.parentNode.parentNode.parentNode.parentNode.id;
+
+        // If the target has an ID number:
+        if (itemId) {
+            // Split the ID at the '-' to have type and number:
+            const idType = itemId.split('-')[0];
+            const idNum = itemId.split('-')[1];
+
+            // Remove the item from the UI:
+
+            // Remove the item from the data object:
+
+            // Update the budget UI:
+
+        }
+    };
+
+    // Budget calculation, data update and display functions.
     const updateBudget = (type) => {
 
         // Calculate the budget
