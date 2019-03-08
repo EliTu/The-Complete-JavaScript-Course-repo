@@ -172,6 +172,28 @@ const UIController = (() => {
         percent: '.budget__expenses--percentage'
     };
 
+    // Formating numbers in the UI for better display and functionality:
+    const formatNumber = (num, type) => {
+
+        // Create a 2 number decimal point:
+        num = Math.abs(num);
+        num = num.toFixed(2);
+
+        // Add a comma to separate larger than 1000 numbers: 
+        const numSplit = num.split('.'); // Split the number between the integer and the decimal.
+        let int = numSplit[0];
+        let dec = numSplit[1];
+        if (int.length > 3) {
+            int = `${int.substr(0,int.length - 3)},${int.substr(int.length - 3, 3)}`;
+        }
+
+        // Add '+' or '-' sign before the number:
+        let sign;
+        type === 'exp' ? sign = '-' : sign = '+';
+
+        return `${sign} ${int}.${dec}`;
+    };
+
     // Public functions:
     return { // returns an object that we can use publicly.
 
@@ -195,7 +217,7 @@ const UIController = (() => {
             <div class="item clearfix" id="${type}-${obj.id}">
             <div class="item__description">${obj.description} </div> 
             <div class="right clearfix">
-            <div class="item__value">${obj.value} </div> 
+            <div class="item__value">${formatNumber(obj.value, type)} </div> 
             <div class="item__percentage"></div>
             <div class="item__delete">
             <button class="item__delete--btn"> 
@@ -234,9 +256,15 @@ const UIController = (() => {
 
         // Display the calculated budget in the UI: income, expense, total and percentage
         displayBudget: (obj) => {
-            document.querySelector(DOMClasses.totalVal).textContent = obj.totalBudget;
-            document.querySelector(DOMClasses.expVal).textContent = obj.totalExp;
-            document.querySelector(DOMClasses.incVal).textContent = obj.totalInc;
+
+            // Checking type for the 'formatNumber' function to work properly on the top section:
+            let type;
+            obj.totalBudget > 0 ? type = 'inc' : type = 'exp';
+
+            // Displaying the top section values in the UI:
+            document.querySelector(DOMClasses.totalVal, ).textContent = formatNumber(obj.totalBudget, type);
+            document.querySelector(DOMClasses.expVal).textContent = formatNumber(obj.totalExp, 'exp');
+            document.querySelector(DOMClasses.incVal).textContent = formatNumber(obj.totalInc, 'inc');
 
             // If the calculated % is greater than 0 or defaulted:
             obj.percentage > 0 ?
