@@ -17,6 +17,19 @@ const budgetController = (() => {
         this.value = value;
     };
 
+    const calcItems = (type) => {
+        // Initial sum value:
+        let sum = 0;
+
+        // Get the value of each array item and add it to the sum:
+        budgetData.allItems[type].forEach((item) => {
+            sum += item.value;
+        });
+
+        // Assign the sum of the items value to the totals according to the type of the item:
+        budgetData.totals[type] = sum;
+    };
+
     // Expense and Income item data storage:
     const budgetData = {
 
@@ -31,7 +44,6 @@ const budgetController = (() => {
         },
 
         budgetTotal: 0,
-
         percentage: -1
     };
 
@@ -58,30 +70,39 @@ const budgetController = (() => {
         },
 
         // Calculating the income and expense values 
-        calcData: (type) => {
+        calcData: () => {
 
-            // Get the total item sum by type - inc or exp
-            const getSum = budgetData.allItems[type].reduce((total, item) => {
-                return total += item.value;
-            }, 0);
+            // Get the total item sum by exectuting the calculation function on both 'inc' and 'exp':
+            calcItems('inc');
+            calcItems('exp');
 
-            // Sort the total item sum at the total data
-            if (type === 'inc') {
-                budgetData.totals.inc = getSum;
-            } else {
-                budgetData.totals.exp = getSum;
-            }
-
-            // Sum up the totals = income - expenses. 
+            // Sum up the totals = income - expenses.
             budgetData.budgetTotal = budgetData.totals.inc - budgetData.totals.exp;
 
-            // Calculate the (rounded) % of the expenses out of the total income, if there are income items
+            // Calculate the(rounded) % of the expenses out of the total income, if there are income items
             budgetData.totals.inc > 0 ?
                 budgetData.percentage = Math.floor((budgetData.totals.exp / budgetData.totals.inc) * 100) :
                 budgetData.percentage = -1;
 
+            // test logs:
             console.log(budgetData.allItems);
             console.log(budgetData.percentage);
+            console.log(budgetData.totals);
+        },
+
+
+        // Remove items from the budgetData object:
+        deleteBudgetItem: (type, id) => {
+
+            // Looping over all the items in the array, if the id matches the selected item id, remove the item:
+            const itemsArr = budgetData.allItems[type];
+
+            itemsArr.forEach((item, i) => {
+                if (id === item.id) budgetData.allItems[type].splice(i, 1);
+            });
+
+            // test logs:
+            console.log(budgetData.allItems);
             console.log(budgetData.totals);
         },
 
@@ -93,16 +114,6 @@ const budgetController = (() => {
                 totalBudget: budgetData.budgetTotal,
                 percentage: budgetData.percentage
             }
-        },
-
-        // Remove items from the budgetData object:
-        deleteBudgetItem: (type, id) => {
-
-            // Looping over all the items in the array, if the id matches the selected item id, remove the item:
-            const itemsArr = budgetData.allItems[type].forEach((item, i) => {
-                if (id === item.id) budgetData.allItems[type].splice(i, 1);
-            });
-            console.log(budgetData.allItems);
         }
     };
 
@@ -123,7 +134,8 @@ const UIController = (() => {
         container: '.container',
         inc: '.income__list',
         exp: '.expenses__list',
-        // Top section budget values
+        itemPercent: 'item__percentage',
+        // Top section budget display values
         totalVal: '.budget__value',
         incVal: '.budget__income--value',
         expVal: '.budget__expenses--value',
@@ -170,6 +182,12 @@ const UIController = (() => {
             if (type !== 'exp') document.querySelector('.item__percentage').remove();
         },
 
+        // Remove items from the UI:
+        deleteListItem: (id) => {
+            // Select the item to be removed by id and remove it:
+            document.getElementById(id).remove();
+        },
+
         // Clear the input fields after a new item has been added
         clearField: () => {
             // Select the input fields and output a node list
@@ -194,9 +212,6 @@ const UIController = (() => {
 
         },
 
-        // Remove items from the UI:
-
-
         // Granting access to the DOMClasses variable to the outside scope.
         getDOMClasses: () => {
             return DOMClasses;
@@ -212,7 +227,7 @@ const appController = ((budgetCtrl, UICtrl) => {
     const eventListenerSetup = () => {
 
         // Submit DOM button event-listener:
-        const DOM = UICtrl.getDOMClasses(); // Access the DOMClasses object in the UIController module.
+        const DOM = UICtrl.getDOMClasses(); // Access the DOMClasses object in the UIController module. 
 
         const addBtn = document.querySelector(DOM.inputBtn).addEventListener('click', addItem);
 
@@ -239,7 +254,7 @@ const appController = ((budgetCtrl, UICtrl) => {
         // Update the data - Update the item to the budget controller based on the inputValues method variables.
         const newItem = budgetCtrl.addNewItem(inputValues.typeVal, inputValues.descriptionVal, inputValues.amountVal); // The method arguments correspond to the budgetController addNewItem function parameters of (type, des, val).
 
-        // Clear the fields after adding an ew item:
+        // Clear the fields after adding a new item:
         const clear = UICtrl.clearField();
 
         // Calculate the budget.
@@ -254,6 +269,7 @@ const appController = ((budgetCtrl, UICtrl) => {
 
         // Getting the value of the id of the item that is being clicked:
         const itemId = e.target.parentNode.parentNode.parentNode.parentNode.id;
+        const inputValues = UIController.getValues();
 
         // If the target has an ID number:
         if (itemId) {
@@ -265,23 +281,34 @@ const appController = ((budgetCtrl, UICtrl) => {
             budgetCtrl.deleteBudgetItem(idType, idNum);
 
             // Remove the item from the UI:
+            UICtrl.deleteListItem(itemId);
 
             // Update the budget UI:
-
+            updateBudget(inputValues.typeVal);
         }
     };
 
     // Budget calculation, data update and display functions.
-    const updateBudget = (type) => {
+    const updateBudget = () => {
 
         // Calculate the budget
-        budgetCtrl.calcData(type);
+        budgetCtrl.calcData();
 
         // Return the calculated budget
         const calculatedBudget = budgetCtrl.getData();
 
         // Display the budget on the UI
         UICtrl.displayBudget(calculatedBudget);
+    };
+
+    // Calculating and displaying the expense item percentage of the total income:
+    const updateItemPercent = () => {
+
+        // Calculate the percentages
+
+        // Get them from the budgetController
+
+        // Update the UI
     };
 
     // Public functions:
@@ -298,74 +325,3 @@ const appController = ((budgetCtrl, UICtrl) => {
 
 // Call init function:
 appController.init();
-
-
-
-/* *Code Trash Bin:
-
- // Jonas's version of updating items in the UI:
-
-  let html, element, newHtml;
-  // Create HTML string with placeholder text:
-
-  if (type === 'inc') {
-      element = DOMClasses.incomeContainer;
-      html = `
-                <div class="item clearfix" id="income-%id%">
-                  <div class="item__description">%description%</div>
-                     <div class="right clearfix">
-                           <div class="item__value">%value%</div>
-                         <div class="item__delete">
-                             <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
-                         </div>
-                      </div>
-                 </div>
-                 `;
-  } else {
-      element = DOMClasses.ExpenseContainer;
-      html = `
-                <div class="item clearfix" id="expense-%id%">
-                  <div class="item__description">%description%</div>
-                 <div class="right clearfix">
-                     <div class="item__value">%value%</div>
-                      <div class="item__percentage">21%</div>
-                      <div class="item__delete">
-                         <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
-                      </div>
-                    </div>
-                 </div>
-                 `;
-  }
-
-  // Replace the placeholder with and acutal data
-
-  newHtml = html.replace(`%id%`, obj.id); // Replace id placeholder with an actual item id.
-  newHtml = newHtml.replace(`%description%`, obj.description); // Replace the description in the new variable (so we can override the other placeholders) with an actual item description.
-  newHtml = newHtml.replace(`%value%`, obj.value); // Replace placeholder value with an acutal value.
-
-
-  // Insert the HTML into the DOM
-  document.querySelector(element).insertAdjacentHTML('beforeend', newHtml);
-  }
-}
-
-If the input fields are clear do not add anything
-alertEmptyField: (desc, val) => {
-    if (desc === '' || val === '') {
-        console.log('Hi, I work!');
-        return;
-    }
-}
-
-
-  Looping over all of the items with an id inside the inc or exp array and returning a new array:
-  const itemIdArr = budgetData.allItems[type].map((item) => {
-      return item.id;
-  });
-
-  // Getting the index position of the id of the selected item:
-  const index = itemIdArr.indexOf(id);
-
-  // If the index is on the array, remove the item from the original array:
-  if (index !== -1) budgetData.allItems[type].splice(index, 1);
-*/
