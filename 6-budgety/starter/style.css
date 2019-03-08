@@ -249,13 +249,13 @@ h2 {
 
 .item__percentage {
     float: left;
-    margin-left: 20px;
+    margin-left: 12px;
     transition: transform 0.3s;
     font-size: 11px;
     background-color: #FFDAD9;
     padding: 3px;
     border-radius: 3px;
-    width: 32px;
+    width: 50px;
     text-align: center;
 }
 

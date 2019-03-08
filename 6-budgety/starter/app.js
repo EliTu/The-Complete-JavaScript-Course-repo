@@ -4,7 +4,7 @@
 
 const budgetController = (() => {
 
-    // Constructor functions for income and expanse:
+    // Constructor functions for expanse items:
     const Expense = function (id, description, value) {
         this.id = id;
         this.description = description;
@@ -14,23 +14,25 @@ const budgetController = (() => {
 
     // Prototype method for the Expense constructor to calculate item percentage of the total income:
     Expense.prototype.calcPercent = function (totalInc) {
-
         // Calculate the percentage and round it to an integer if there's income:
         totalInc > 0 ?
-            this.percentage = Math.round((this.value / totalInc) * 100) :
+            this.percentage = (this.value / totalInc) * 100 :
             this.percentage = -1;
     };
 
+    // Return the calculated value, parse it into floating number and fix the floating point to 2 numbers after the '.':
     Expense.prototype.getPercentage = function () {
-        return this.calcPercent;
+        return parseFloat(this.percentage).toFixed(2);
     };
 
+    // Constructor functions for income items:
     const Income = function (id, description, value) {
         this.id = id;
         this.description = description;
         this.value = value;
     };
 
+    // Calculate the value sum of all the items:
     const calcItems = (type) => {
         // Initial sum value:
         let sum = 0;
@@ -100,32 +102,28 @@ const budgetController = (() => {
                 budgetData.percentage = -1;
 
             // test logs:
-            console.log(budgetData.allItems);
-            console.log(budgetData.percentage);
-            console.log(budgetData.totals);
+            // console.log(budgetData.allItems);
+            // console.log(budgetData.percentage);
+            // console.log(budgetData.totals);
         },
 
         // Calculate the expense items percentages:
         calcExpPercent: () => {
-
             budgetData.allItems.exp.forEach((item) => {
                 item.calcPercent(budgetData.totals.inc);
-                console.log(item);
             });
         },
 
         // Get the percentages of the calculated exp items
         getCalculatedPercent: () => {
             const percentData = budgetData.allItems.exp.map((item) => {
-                return item.getPercentage;
+                return item.getPercentage();
             });
-            console.log(percentData);
             return percentData;
         },
 
         // Remove items from the budgetData object:
         deleteBudgetItem: (type, id) => {
-
             // Looping over all the items in the array, if the id matches the selected item id, remove the item:
             const itemsArr = budgetData.allItems[type];
 
@@ -134,8 +132,8 @@ const budgetController = (() => {
             });
 
             // test logs:
-            console.log(budgetData.allItems);
-            console.log(budgetData.totals);
+            // console.log(budgetData.allItems);
+            // console.log(budgetData.totals);
         },
 
         // Return the data that has been calculated
@@ -166,7 +164,7 @@ const UIController = (() => {
         container: '.container',
         inc: '.income__list',
         exp: '.expenses__list',
-        itemPercent: 'item__percentage',
+        itemPercent: '.item__percentage',
         // Top section budget display values
         totalVal: '.budget__value',
         incVal: '.budget__income--value',
@@ -211,7 +209,9 @@ const UIController = (() => {
             listType.appendChild(newDiv);
 
             // If its an income item, remove the percentage indicator div
-            if (type !== 'exp') document.querySelector('.item__percentage').remove();
+            if (type !== 'exp') {
+                document.querySelector(DOMClasses.itemPercent).remove();
+            }
         },
 
         // Remove items from the UI:
@@ -237,6 +237,7 @@ const UIController = (() => {
             document.querySelector(DOMClasses.totalVal).textContent = obj.totalBudget;
             document.querySelector(DOMClasses.expVal).textContent = obj.totalExp;
             document.querySelector(DOMClasses.incVal).textContent = obj.totalInc;
+
             // If the calculated % is greater than 0 or defaulted:
             obj.percentage > 0 ?
                 document.querySelector(DOMClasses.percent).textContent = `${obj.percentage}%` :
@@ -244,11 +245,28 @@ const UIController = (() => {
 
         },
 
+        // Display the percentage of the expense out of the income in each exp item:
+        displayExpPercentage: (percent) => {
+            // If it's an expense item (has 'percentage' label):
+            if (document.querySelector(DOMClasses.itemPercent)) {
+                // Get a node list of all the items:
+                const expItemNode = document.querySelectorAll(DOMClasses.itemPercent);
+
+                // Loop over them and add the percentage:
+                expItemNode.forEach((item, i) => {
+                    if (percent[i] > 0) {
+                        item.textContent = percent[i] + '%';
+                    } else {
+                        item.textContent = '---';
+                    }
+                });
+            }
+        },
+
         // Granting access to the DOMClasses variable to the outside scope.
         getDOMClasses: () => {
             return DOMClasses;
         }
-
     };
 })();
 
@@ -320,6 +338,9 @@ const appController = ((budgetCtrl, UICtrl) => {
 
             // Update the budget UI:
             updateBudget(inputValues.typeVal);
+
+            // Update the exp item percentages:
+            updateItemPercent();
         }
     };
 
@@ -346,7 +367,7 @@ const appController = ((budgetCtrl, UICtrl) => {
         const expPercentages = budgetCtrl.getCalculatedPercent();
 
         // Update the UI
-        console.log(expPercentages);
+        UICtrl.displayExpPercentage(expPercentages);
     };
 
     // Public functions:
