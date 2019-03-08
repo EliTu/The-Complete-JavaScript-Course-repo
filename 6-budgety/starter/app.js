@@ -9,6 +9,20 @@ const budgetController = (() => {
         this.id = id;
         this.description = description;
         this.value = value;
+        this.percentage = -1;
+    };
+
+    // Prototype method for the Expense constructor to calculate item percentage of the total income:
+    Expense.prototype.calcPercent = function (totalInc) {
+
+        // Calculate the percentage and round it to an integer if there's income:
+        totalInc > 0 ?
+            this.percentage = Math.round((this.value / totalInc) * 100) :
+            this.percentage = -1;
+    };
+
+    Expense.prototype.getPercentage = function () {
+        return this.calcPercent;
     };
 
     const Income = function (id, description, value) {
@@ -52,6 +66,7 @@ const budgetController = (() => {
 
         // Adding an item to the data storage
         addNewItem: (type, des, val) => {
+
             let newItem, idNumber;
 
             // Create a new and unique ID for each new item based on the number of the last item in the array
@@ -90,6 +105,23 @@ const budgetController = (() => {
             console.log(budgetData.totals);
         },
 
+        // Calculate the expense items percentages:
+        calcExpPercent: () => {
+
+            budgetData.allItems.exp.forEach((item) => {
+                item.calcPercent(budgetData.totals.inc);
+                console.log(item);
+            });
+        },
+
+        // Get the percentages of the calculated exp items
+        getCalculatedPercent: () => {
+            const percentData = budgetData.allItems.exp.map((item) => {
+                return item.getPercentage;
+            });
+            console.log(percentData);
+            return percentData;
+        },
 
         // Remove items from the budgetData object:
         deleteBudgetItem: (type, id) => {
@@ -262,6 +294,9 @@ const appController = ((budgetCtrl, UICtrl) => {
 
         // Update the UI - Update the item to the UI controller.
         const addToList = UICtrl.addListItem(newItem, inputValues.typeVal);
+
+        // Calculate and update the expense items percentages:
+        const expPercentages = updateItemPercent();
     };
 
     // Delete items from the list event listener function
@@ -305,10 +340,13 @@ const appController = ((budgetCtrl, UICtrl) => {
     const updateItemPercent = () => {
 
         // Calculate the percentages
+        budgetCtrl.calcExpPercent();
 
         // Get them from the budgetController
+        const expPercentages = budgetCtrl.getCalculatedPercent();
 
         // Update the UI
+        console.log(expPercentages);
     };
 
     // Public functions:
