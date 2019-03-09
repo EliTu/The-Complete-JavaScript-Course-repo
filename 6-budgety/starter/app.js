@@ -98,7 +98,7 @@ const budgetController = (() => {
 
             // Calculate the(rounded) % of the expenses out of the total income, if there are income items
             budgetData.totals.inc > 0 ?
-                budgetData.percentage = Math.floor((budgetData.totals.exp / budgetData.totals.inc) * 100) :
+                budgetData.percentage = parseFloat((budgetData.totals.exp / budgetData.totals.inc) * 100).toFixed(2) :
                 budgetData.percentage = -1;
         },
 
@@ -295,11 +295,15 @@ const UIController = (() => {
             document.querySelector(DOMClasses.incVal).textContent = formatNumber(obj.totalInc, 'inc');
 
             // If the calculated % is greater than 0 or defaulted:
-            // TODO Remove the percentage block if no item/ no inc item is available
+            const topPercent = document.querySelector(DOMClasses.percent);
 
-            obj.percentage > 0 ?
-                document.querySelector(DOMClasses.percent).textContent = `${obj.percentage}%` :
-                document.querySelector(DOMClasses.percent).textContent = '---';
+            if (obj.percentage >= 0) {
+                topPercent.classList.add('opacity');
+                topPercent.textContent = `${obj.percentage}%`;
+            } else {
+                topPercent.classList.remove('opacity');
+                topPercent.textContent = '';
+            }
 
         },
 
@@ -342,8 +346,8 @@ const UIController = (() => {
             });
 
             // Get the add button and apply the special class:
-            document.querySelector(DOMClasses.inputBtn).classList.toggle('red');
-            document.querySelector(DOMClasses.inputBtn).classList.toggle('red:hover');
+            document.querySelector(DOMClasses.inputBtn).classList.toggle('red-button');
+            document.querySelector(DOMClasses.inputBtn).classList.toggle('red-button:hover');
         },
 
         // Granting access to the DOMClasses variable to the outside scope.
@@ -473,3 +477,12 @@ const appController = ((budgetCtrl, UICtrl) => {
 
 // Call init function:
 appController.init();
+
+//! To-do List:
+
+// todo: UI - Display warning & success messages upon a press.
+// todo: UI - Remove the percentage block if no item/ no inc item is available.
+// todo: UI - Add the current date (DD/MM/YY) to the UI top left panel.
+// todo: UI - Add item add date.
+// todo: DATA - ADD LOCAL DATA STORAGE.
+// todo: CONTROL - Add 'delete all' and 'undo' buttons.

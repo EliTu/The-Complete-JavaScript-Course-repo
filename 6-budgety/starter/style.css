@@ -27,17 +27,17 @@ body {
     float: right;
 }
 
-.red {
+.red-button {
     color: #FF5049 !important;
 }
 
-.red:hover {
+.red-button:hover {
     background: rgba(248, 142, 138, 0.123) !important;
 }
 
 .red-focus:focus {
     border: 1px solid rgb(248, 142, 138) !important;
-    background: rgba(248, 142, 138, 0.123) !important;
+    background: rgba(248, 142, 138, 0.062) !important;
 }
 
 /**********************************************
@@ -110,18 +110,22 @@ body {
 .budget__expenses--percentage {
     float: left;
     height: 1.1rem;
-    width: 34px;
+    width: 43px;
     font-size: 11px;
     padding: 3px 0;
     margin-left: 10px;
 }
 
 .budget__expenses--percentage {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0);
     text-align: center;
     border-radius: 3px;
+    font-size: 0.2rem;
 }
 
+.opacity {
+    background-color: rgba(255, 255, 255, 0.205) !important;
+}
 
 /**********************************************
 *** BOTTOM PART
@@ -200,7 +204,7 @@ body {
 .add__value:focus {
     outline: none;
     border: 1px solid #28B9B5;
-    background: rgba(40, 185, 180, 0.123);
+    background: rgba(40, 185, 180, 0.062);
 }
 
 .add__btn:focus {
