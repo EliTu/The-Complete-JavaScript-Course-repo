@@ -1,6 +1,6 @@
-//! Modules:
+//! Modules - The MVC architect module structure:
 
-//* Budget Control Module:
+//* Budget Control Module - MODEL:
 
 const budgetController = (() => {
 
@@ -100,11 +100,6 @@ const budgetController = (() => {
             budgetData.totals.inc > 0 ?
                 budgetData.percentage = Math.floor((budgetData.totals.exp / budgetData.totals.inc) * 100) :
                 budgetData.percentage = -1;
-
-            // test logs:
-            // console.log(budgetData.allItems);
-            // console.log(budgetData.percentage);
-            // console.log(budgetData.totals);
         },
 
         // Calculate the expense items percentages:
@@ -130,11 +125,43 @@ const budgetController = (() => {
             itemsArr.forEach((item, i) => {
                 if (id === item.id) budgetData.allItems[type].splice(i, 1);
             });
-
-            // test logs:
-            // console.log(budgetData.allItems);
-            // console.log(budgetData.totals);
         },
+
+        // Get the date data to display the current month:
+        getDate: () => {
+            // Get the current date:
+            const date = new Date();
+
+            // Get current month and year:
+            const months = date.getMonth();
+            const years = date.getFullYear();
+
+            // Month names array:
+            const monthNames = [
+                "January",
+                "February",
+                "March",
+                "April",
+                "May",
+                "June",
+                "July",
+                "August",
+                "September",
+                "October",
+                "November",
+                "December"
+            ];
+
+            // Return an object that contains the full month (with a name instead of an integer) and the current year:
+            return {
+                currentMonth: monthNames[months],
+                currentYear: years
+            };
+
+            // TODO Add the current date (DD/MM/YY) to the UI top left panel.
+        },
+
+        // TODO ADD LOCAL DATA STORAGE
 
         // Return the data that has been calculated
         getData: () => {
@@ -149,7 +176,7 @@ const budgetController = (() => {
 
 })();
 
-//* UI Control Module:
+//* UI Control Module - VIEW:
 
 const UIController = (() => {
 
@@ -169,7 +196,8 @@ const UIController = (() => {
         totalVal: '.budget__value',
         incVal: '.budget__income--value',
         expVal: '.budget__expenses--value',
-        percent: '.budget__expenses--percentage'
+        percent: '.budget__expenses--percentage',
+        month: '.budget__title--month'
     };
 
     // Formating numbers in the UI for better display and functionality:
@@ -262,11 +290,13 @@ const UIController = (() => {
             obj.totalBudget > 0 ? type = 'inc' : type = 'exp';
 
             // Displaying the top section values in the UI:
-            document.querySelector(DOMClasses.totalVal, ).textContent = formatNumber(obj.totalBudget, type);
+            document.querySelector(DOMClasses.totalVal).textContent = formatNumber(obj.totalBudget, type);
             document.querySelector(DOMClasses.expVal).textContent = formatNumber(obj.totalExp, 'exp');
             document.querySelector(DOMClasses.incVal).textContent = formatNumber(obj.totalInc, 'inc');
 
             // If the calculated % is greater than 0 or defaulted:
+            // TODO Remove the percentage block if no item/ no inc item is available
+
             obj.percentage > 0 ?
                 document.querySelector(DOMClasses.percent).textContent = `${obj.percentage}%` :
                 document.querySelector(DOMClasses.percent).textContent = '---';
@@ -291,6 +321,14 @@ const UIController = (() => {
             }
         },
 
+        // Display the current budget month and year in the UI:
+        displayDate: (getDateFunc) => {
+            // Get the data from the budgetController module
+            const currentMonth = getDateFunc();
+            // Manipulate the DOM with the data:
+            document.querySelector(DOMClasses.month).textContent = `${getDateFunc().currentMonth}, ${getDateFunc().currentYear}`;
+        },
+
         // Granting access to the DOMClasses variable to the outside scope.
         getDOMClasses: () => {
             return DOMClasses;
@@ -298,7 +336,7 @@ const UIController = (() => {
     };
 })();
 
-//*  Controller Module:
+//*  Controller Module - CONTROLLER:
 const appController = ((budgetCtrl, UICtrl) => {
 
     // Setup the event listeners
@@ -402,7 +440,10 @@ const appController = ((budgetCtrl, UICtrl) => {
     return {
         // The app initialization function
         init: () => {
+            // Initialize the event listeners upon page load:
             eventListenerSetup();
+            // Initialize the date upon load:
+            UICtrl.displayDate(budgetCtrl.getDate);
         }
     };
 
