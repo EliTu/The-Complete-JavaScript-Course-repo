@@ -329,6 +329,23 @@ const UIController = (() => {
             document.querySelector(DOMClasses.month).textContent = `${getDateFunc().currentMonth}, ${getDateFunc().currentYear}`;
         },
 
+        // eventListener callback function - change the colors of the input field borders by toggle between 'exp' and 'inc':
+        changeColor: () => {
+            // Get the input field DOM classes:
+            const fields = document.querySelectorAll(
+                `${DOMClasses.inputType}, ${DOMClasses.inputDescription}, ${DOMClasses.inputAmount}`
+            );
+
+            // Loop over them and apply the special class:
+            fields.forEach((field) => {
+                field.classList.toggle('red-focus');
+            });
+
+            // Get the add button and apply the special class:
+            document.querySelector(DOMClasses.inputBtn).classList.toggle('red');
+            document.querySelector(DOMClasses.inputBtn).classList.toggle('red:hover');
+        },
+
         // Granting access to the DOMClasses variable to the outside scope.
         getDOMClasses: () => {
             return DOMClasses;
@@ -355,8 +372,11 @@ const appController = ((budgetCtrl, UICtrl) => {
 
         // Using event delegation to attach event listener to the 'delete' button:
         const removeItem = document.querySelector(DOM.container).addEventListener('click', deleteItem);
+
+        // Change input fields colors between inc and exp event:
+        const changeColor = document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changeColor);
     }
-    // Main functionality control function - Add income/expense items:
+    // eventListener callback function - Add income/expense items:
     const addItem = () => {
         // Get the input data(type, description, amount):
 
@@ -383,7 +403,7 @@ const appController = ((budgetCtrl, UICtrl) => {
         const expPercentages = updateItemPercent();
     };
 
-    // Delete items from the list event listener function
+    // eventListener callback function - Delete items from the list event listener function
     const deleteItem = (e) => {
 
         // Getting the value of the id of the item that is being clicked:
