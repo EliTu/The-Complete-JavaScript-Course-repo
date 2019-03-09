@@ -37,6 +37,7 @@ body {
 
 .red-focus:focus {
     border: 1px solid rgb(248, 142, 138) !important;
+    background: rgba(248, 142, 138, 0.123) !important;
 }
 
 /**********************************************
@@ -199,6 +200,7 @@ body {
 .add__value:focus {
     outline: none;
     border: 1px solid #28B9B5;
+    background: rgba(40, 185, 180, 0.123);
 }
 
 .add__btn:focus {
@@ -215,11 +217,13 @@ body {
     float: left;
     width: 475px;
     margin-right: 50px;
+    transition: all 0.2s ease-out;
 }
 
 .expenses {
     float: left;
     width: 475px;
+    transition: all 0.2s ease-out;
 }
 
 h2 {
@@ -240,6 +244,10 @@ h2 {
 .item {
     padding: 13px;
     border-bottom: 1px solid #e7e7e7;
+}
+
+.item:hover {
+    background: #e7e7e734;
 }
 
 .item:first-child {
