@@ -481,7 +481,6 @@ appController.init();
 //! To-do List:
 
 // todo: UI - Display warning & success messages upon a press.
-// todo: UI - Remove the percentage block if no item/ no inc item is available.
 // todo: UI - Add the current date (DD/MM/YY) to the UI top left panel.
 // todo: UI - Add item add date.
 // todo: DATA - ADD LOCAL DATA STORAGE.
