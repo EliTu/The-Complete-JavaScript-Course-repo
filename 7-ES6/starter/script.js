@@ -259,11 +259,13 @@ new Person('Java').myFriends6(friends); // -> ["Java is friends with Chewie", "J
  * Destructuring(Section 7, lecture 109)
  */
 
+/* Commenting lecture code
+
 // Destructuring arrays in ES5:
 
 var john = ['John', 26];
-var name5 = john[0];
-var age5 = john[1];
+var name5 = john[0]; // -> John
+var age5 = john[1]; // -> 26
 
 // Destructuring arrays in ES6:
 
@@ -291,8 +293,8 @@ const {
     firstName: a,
     lastName: b
 } = obj;
-console.log(a);
-console.log(b);
+console.log(a); // -> John
+console.log(b); // -> Smith
 
 // Using destructuring to return multiple values from a function:
 
@@ -303,3 +305,8 @@ const timeToRetire = (year) => {
 const [age, yearsLeft] = timeToRetire(1991);
 console.log(age); // -> 28
 console.log(yearsLeft); // -> 37
+*/
+
+/***********************************************************
+ * Arrays in ES6 (Section 7, lecture 110)
+ */
