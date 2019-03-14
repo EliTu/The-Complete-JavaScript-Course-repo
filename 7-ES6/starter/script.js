@@ -310,3 +310,77 @@ console.log(yearsLeft); // -> 37
 /***********************************************************
  * Arrays in ES6 (Section 7, lecture 110)
  */
+/* Commenting out lecture code:
+
+const boxes = document.querySelectorAll('.box'); // -> node list
+
+// Converting node list into an array:
+
+// ES5 conversion - '.slice' + '.call()':
+
+var boxesArr5 = Array.prototype.slice.call(boxes); // a hack to transform node list to an array,
+
+boxesArr5.forEach((box) => {
+    box.style.background = 'dodgerblue';
+});
+
+
+// ES6 conversion - '.from()':
+// an array method that transforms a node list into an array.
+const boxArr6 = Array.from(boxes);
+
+Array.from(boxes).forEach((box) => {
+    box.style.background = 'goldenrod';
+});
+
+// Loops:
+
+// ES5 loops - 'for' loops:
+
+for (var i = 0; i < boxesArr5.length; i++) {
+    if (boxesArr5[i].className === 'box blue') continue;
+    boxesArr5[i].innerHTML = 'I\'m the new blue!';
+}
+
+
+// ES6 'for of' loop:
+
+boxArr6.forEach((box) => {
+    if (box.className === 'orange') continue;
+    box.innerHTML = 'Wazzaaa!';
+}); // -> ERROR: Illegal continue statement
+
+
+for (const box of boxArr6) {
+    if (box.className.includes('orange')) continue;
+    box.innerHTML = `I'm the new ORANGE!`;
+}
+
+// ES5 finding index and element based on index:
+
+var ages = [12, 17, 8, 21, 14, 11];
+
+var fullAge = ages.map(function (age) {
+    return age >= 18;
+});
+console.log(fullAge); // -> [false, false, false, true, false, false].
+
+console.log(fullAge.indexOf(true)); // -> 3
+
+const ageIndex = fullAge.indexOf(true);
+console.log(ages[ageIndex]); // -> 21
+
+// ES6 Finding index array methods - '.finedIndex():
+
+const fullAge6 = ages.findIndex(age => age >= 18);
+console.log(fullAge6); // -> 3
+
+// ES6 Finding the element based on index - '.find()':
+
+const ageIndex6 = ages.find(age => age >= 18);
+console.log(ageIndex6); // -> 21
+*/
+
+/**********************************************
+ * The Spread Operator(Section 7, lecture 111)
+ */
