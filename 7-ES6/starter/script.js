@@ -423,3 +423,71 @@ allElements.forEach((element) => {
     element.style.color = 'blueviolet';
 });
 */
+
+/***********************************************************
+ * Rest parameters (Section 7, lecture 112)
+ */
+/* Commenting out lecture code:
+
+// ES5:
+
+function fullAge5() {
+    console.log(arguments); // -> [1990, 1999, 1965,] An array-like object, but not an array.
+
+    var argsArr = Array.prototype.slice.call(arguments); // convert the object to an array.
+
+    argsArr.forEach(function (arg) {
+        var age = new Date().getFullYear();
+        console.log((age - arg) >= 18);
+
+    });
+}
+fullAge5(1990, 2003, 1965); // -> true, false, true
+fullAge5(1982, 2002, 2000, 1988, 1992); // -> true, false, true, true, true
+
+// ES6 with rest parameters:
+
+function fullAge6(...years) {
+    console.log(years); // -> [1990, 2003, 1965] An array.
+
+    years.forEach(year => {
+        const age = new Date().getFullYear();
+        console.log((age - year) >= 18);
+    });
+}
+fullAge6(1990, 2003, 1965); // -> true, false, true
+fullAge6(1953, 1999, 2013, 2004); // -> true, true, false, false
+
+
+// More usage of the rest parameters - special argument:
+
+// ES5:
+
+function fullAge5(limit) {
+
+    var argsArr = Array.prototype.slice.call(arguments, 1);
+    console.log(argsArr); // -> [1990, 2003, 1965]
+
+    argsArr.forEach(function (arg) {
+        var age = new Date().getFullYear();
+        console.log((age - arg) >= limit);
+
+    });
+}
+fullAge5(21, 1990, 2003, 1965); // -> true, false, true
+
+// ES6:
+
+function fullAge6(limit, ...years) {
+
+    years.forEach(year => {
+        const age = new Date().getFullYear();
+        console.log((age - year) >= limit);
+    });
+}
+fullAge6(21, 1999, 2003, 1965, 1996); // -> false, false, true, true
+*/
+
+/*************************************************
+ * Default Parameters (Section 7, lecture 113)
+ */
