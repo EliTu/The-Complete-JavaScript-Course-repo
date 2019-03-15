@@ -491,3 +491,42 @@ fullAge6(21, 1999, 2003, 1965, 1996); // -> false, false, true, true
 /*************************************************
  * Default Parameters (Section 7, lecture 113)
  */
+
+/* Commenting out lecture code:
+
+// ES5 predefined function parameters:
+
+function SmithPerson(firstName, yearOfBirth, lastName, nationality) {
+
+    lastName === undefined ? lastName = 'Smith' : lastName;
+    nationality === undefined ? nationality = 'American' : lastName;
+
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.yearOfBirth = yearOfBirth;
+    this.nationality = nationality;
+}
+
+var john = new SmithPerson('John', 1990); // Only 2 arguments in the function call
+console.log(john); // -> {firstName: "John", lastName: "Smith", yearOfBirth: 1990, nationality: "American"}
+var emily = new SmithPerson('Emily', 1983, 'Diaz', 'Spanish');
+console.log(emily); // -> {firstName: "Emily", lastName: "Diaz", yearOfBirth: 1983, nationality: "Spanish"}
+
+// ES6 default parameters:
+
+function starkPerson(firstName, yearOfBirth, lastName = 'Stark', nationality = 'Northern') {
+
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.yearOfBirth = yearOfBirth;
+    this.nationality = nationality;
+}
+const ned = new starkPerson('Eddard', 4431);
+console.log(ned); // -> {firstName: "Eddard", lastName: "Stark", yearOfBirth: 4431, nationality: "Northern"}
+const jon = new starkPerson('Jon', 4470, 'Targaryen', 'Westerosi');
+console.log(jon); // -> {firstName: "Jon", lastName: "Targaryen", yearOfBirth: 4470, nationality: "Westerosi"}
+*/
+
+/***********************************************************
+ * Maps (Section 7, lecture 114)
+ */
