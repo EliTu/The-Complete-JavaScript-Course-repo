@@ -384,3 +384,42 @@ console.log(ageIndex6); // -> 21
 /**********************************************
  * The Spread Operator(Section 7, lecture 111)
  */
+/* Commenting out lecture code:
+
+function addFourAges(a, b, c, d) {
+    return a + b + c + d;
+}
+
+var sum1 = addFourAges(18, 30, 12, 21);
+console.log(sum1); // -> 81
+
+// ES5 passing an array as an argument in a function:
+
+var ages = [18, 30, 12, 21];
+var sum2 = addFourAges.apply(null, ages); // Calls the array and its elements as arguments on the function.
+console.log(sum2); // -> 81
+
+// ES6 passing an array as an argument in a function:
+
+const sum3 = addFourAges(...ages); // addFourAges(18, 30, 12, 21);
+console.log(sum3); // -> 81
+
+// Using ES6 spread operator for joining arrays:
+
+const smithFamily = ['John', 'Jane', 'Mark'];
+const millerFamily = ['Mary', 'Bob', 'Ann'];
+
+const joinFamily = [...smithFamily, 'Georgey', ...millerFamily];
+console.log(joinFamily); // ["John", "Jane", "Mark", "Georgey", "Mary", "Bob", "Ann"]
+
+// Using ES6 spread operator on node list:
+
+const boxes = document.querySelectorAll('.box');
+const heading = document.querySelector('h1');
+
+const allElements = [...boxes, heading]; // -> node list: [div.box.green, div.box.blue, div.box.orange, h1]
+
+allElements.forEach((element) => {
+    element.style.color = 'blueviolet';
+});
+*/
