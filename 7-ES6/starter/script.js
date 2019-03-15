@@ -530,3 +530,54 @@ console.log(jon); // -> {firstName: "Jon", lastName: "Targaryen", yearOfBirth: 4
 /***********************************************************
  * Maps (Section 7, lecture 114)
  */
+/* Commenting out lecture code
+
+// Map declaration and basic methods:
+
+const question = new Map(); // Creating a new map object
+
+question.set('question', 'What is the official name of the latest major JavaScript version?');
+
+question.set(1, 'ES6');
+question.set(2, 'ES5');
+question.set(3, 'ES2014');
+question.set(4, 'ES2015');
+
+question.set('correct', 4);
+
+question.set(true, 'Correct Answer!');
+question.set(false, 'Wrong!');
+
+console.log(question);
+
+console.log(question.get('question')); // retrieve the value of a map key.
+console.log(question.size); // -> 8. shows the amount of items the map has.
+question.delete(1); // -> removes a map element by key. Now the question.size is 7.
+
+if (question.has(1)) question.delete(1); // -> If the map has an element with the key of '1', delete it.
+
+question.clear(); // deletes all the elements in the map
+console.log(question.size); // -> 0
+
+// Looping over maps:
+
+// forEach:
+question.forEach((value, key) => {
+    console.log(`The key is: ${key}. its value is: ${value}.`);
+});
+
+// for of (With destructuring):
+for (let [key, value] of question.entries()) {
+    console.log(`The key is: ${key}. its value is: ${value}.`);
+}
+
+// Displaying the question and the answers:
+console.log(question.get('question'));
+for (let [key, value] of question.entries()) {
+    if (typeof (key) === 'number') console.log(`Answer number ${key}: ${value}`);
+}
+// Getting the answer and displaying results:
+const answer = parseInt(prompt('Write the correct answer'));
+
+console.log(question.get(answer === question.get('correct')));
+*/
