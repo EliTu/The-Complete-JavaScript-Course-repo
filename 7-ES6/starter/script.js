@@ -581,3 +581,56 @@ const answer = parseInt(prompt('Write the correct answer'));
 
 console.log(question.get(answer === question.get('correct')));
 */
+
+/*****************************************************
+ * Classes (Section 7, 115)
+ */
+/* Commenting out lecture code:
+
+//  ES5 Constructors:
+
+var Person5 = function (name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+}
+
+Person5.prototype.calcAge = function () {
+    var age = new Date().getFullYear() - this.yearOfBirth;
+    console.log(age);
+}
+
+var john5 = new Person5('John', 1990, 'teacher');
+john5.calcAge(); // -> 29
+
+// ES6 Classes:
+class Person6 {
+
+    // Constructor part:
+    constructor(name, yearOfBirth, job) {
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.job = job;
+    }
+
+    // Inherited class method:
+    calcAge() {
+        let age = new Date().getFullYear() - this.yearOfBirth;
+        console.log(age);
+    }
+
+    // Static method - not inherited:
+    static greeting() {
+        console.log('Hey there!');
+    }
+}
+
+const john6 = new Person6('John', 1990, 'teacher');
+john6.calcAge(); // -> 29
+
+Person6.greeting(); // -> Hey there!
+*/
+
+/*************************************************
+ * Classes with subclasses (Section 7, lecture 115)
+ */
