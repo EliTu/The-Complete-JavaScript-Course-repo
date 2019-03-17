@@ -634,3 +634,295 @@ Person6.greeting(); // -> Hey there!
 /*************************************************
  * Classes with subclasses (Section 7, lecture 115)
  */
+/* Commenting out lecture code:
+
+// ES5 constructor inheritance:
+
+// The person "Super-class":
+var Person5 = function (name, yearOfBirth, job) {
+    this.name = name;
+    this.yearOfBirth = yearOfBirth;
+    this.job = job;
+}
+
+Person5.prototype.calcAge = function () {
+    var age = new Date().getFullYear() - this.yearOfBirth;
+    console.log(age);
+}
+
+// The athlete "sub-class":
+var Athlete5 = function (name, yearOfBirth, job, olympicGames, medals) {
+    // Call the super-class:
+    Person5.call(this, name, yearOfBirth, job);
+    this.olympicGames = olympicGames;
+    this.medals = medals;
+}
+
+// Pass the prototypes of the super-class to the sub-class prototype:
+Athlete5.prototype = Object.create(Person5.prototype);
+
+// sub-class specific method, does not get inherited by the super-class (Need to be set after the class inheritance):
+Athlete5.prototype.wonMedal = function () {
+    this.medals++
+    console.log(this.medals);;
+}
+
+// Instance of an Athlete with the Person properties:
+var johnAthlete5 = new Athlete5('John', 1990, 'Swimmer', 3, 10);
+console.log(johnAthlete5); // -> {name: "John", yearOfBirth: 1990, job: "Swimmer", olympicGames: 3, medals: 10}
+
+// Calling the Inherited super-class method:
+johnAthlete5.calcAge(); // -> 29
+
+// Calling the sub-class method:
+johnAthlete5.wonMedal(); // -> 11
+
+
+// ES6 Classes and Sub-classes:
+class Person6 {
+
+    // Constructor part:
+    constructor(name, yearOfBirth, job) {
+        this.name = name;
+        this.yearOfBirth = yearOfBirth;
+        this.job = job;
+    }
+
+    // Inherited class method:
+    calcAge() {
+        let age = new Date().getFullYear() - this.yearOfBirth;
+        console.log(age);
+    }
+}
+
+// ES6 Sub-class:
+
+class Athlete6 extends Person6 {
+    constructor(name, yearOfBirth, job, olympicGames, medals) {
+        // Calling the super-class:
+        super(name, yearOfBirth, job);
+        this.olympicGames = olympicGames;
+        this.medals = medals;
+    }
+
+    // Sub-class method:
+    wonMedal() {
+        this.medals++;
+        console.log(this.medals);
+    }
+}
+
+// New class instance:
+const johnAthlete6 = new Athlete6('John', 1990, 'Swimmer', 3, 10);
+
+// Call the super-class method;
+johnAthlete6.calcAge(); // -> 29
+
+// Call the sub-class method:
+johnAthlete6.wonMedal(); //-> 11
+*/
+
+/***************************************************
+ * Coding Challenge #8 (Section 7, lecture 117)
+ */
+
+/* Info:
+   - We're in charge of parks and streets.
+   - The town has 3 parks, and 4 streets.
+   - All the parks and streets have a name and a build year.
+*/
+/* Tasks:
+   - Present the tree density of each park in the town (Formula: number of trees / park area).
+   - Average age of each towns park (Formula: sum of all ages/ number of parks).
+   - The name of the park that has more than 1000 trees.
+   - Total and average length of the town's streets.
+   - Size classification of all the streets: tiny/small/norma/big/huge. If size is unknown, the default is normal.
+*/
+/* Plan:
+    // - Create 2 main classes: one for parks and one for streets.
+    // - Each class should have the following general properties: name, buildYear. 
+    // - Park class should include extra properties: areaSize, numberOfTrees. Street class should have: length.
+    // - Created relevant methods and static methods for streets and parks.
+    // - Instances of parks and streets should be put inside a maps. 
+    // - Create an array of total amount of park instances(?).
+    // - Create an array of total amount of street instances(?).
+*/
+// start code:
+
+// City assets superclass:
+class Assets {
+    constructor(name, buildYear) {
+        this.name = name;
+        this.buildYear = buildYear;
+    }
+}
+
+// Street subclass:
+class Street extends Assets {
+    constructor(name, buildYear, length, size = 'Normal') {
+        super(name, buildYear);
+        this.length = length;
+        this.size = size;
+    }
+
+    calcSize() {
+        if (this.length >= 20) {
+            this.size = 'Huge';
+        } else if (this.length >= 15 && this.length <= 20) {
+            this.size = 'Big';
+        } else if (this.length >= 10 && this.length <= 15) {
+            this.size = size;
+        } else {
+            this.size = 'Small';
+        }
+        return this.size;
+    }
+
+    static calcLength(totalLength, totalStreets) {
+        console.log(`The average length of a street is ${(totalLength/ totalStreets).toFixed(2)} km, while the total length is ${totalLength} km.`);
+    }
+}
+
+// Street instances array setup:
+const streetArr = [];
+const streetInstanceArr = function (name, year, length, size) {
+    streetArr.push(new Street(name, year, length, size));
+}
+// Street instances list:
+const shuiYuanSt = streetInstanceArr('ShuiYuan Street', 1950, 17.5);
+const daAnSt = streetInstanceArr('Daan Street', 1927, 22.3);
+const tongAnSt = streetInstanceArr('TongAn Street', 1962, 7);
+const pingAnSt = streetInstanceArr('PingAn Street', 1947, 19.1);
+
+// Set street size:
+function setSize(...instances) {
+    instances.forEach((instance) => {
+        instance.calcSize();
+    });
+}
+setSize(...streetArr); // Call using spread operator.
+
+// Street map:
+const streetMap = new Map();
+
+// Set streets into the map: 
+function setStreet(...instances) {
+    instances.forEach((instance, i) => {
+        streetMap.set(i, instance);
+    });
+}
+setStreet(...streetArr); // Call using spread operator.
+
+// total streets:
+const streetMapSize = streetMap.size;
+
+// total length:
+const totalLength = function () {
+    const lengthArr = [];
+    for (let [key, value] of streetMap.entries()) {
+        lengthArr.push(value.length);
+    }
+    const sum = lengthArr.reduce((total, entry) => total + entry);
+    return sum;
+}
+
+// Average length: 
+const lengthAverage = totalLength / streetMapSize;
+
+// Display streets info:
+function displayStreet(key) {
+    console.log(`${streetMap.get(key).streetName}, built in ${streetMap.get(key).buildYear}, is a ${streetMap.get(key).size} street.`);
+}
+
+// Park class:
+class Park extends Assets {
+    constructor(name, buildYear, numberOfTrees, areaSize) {
+        super(name, buildYear);
+        this.numberOfTrees = numberOfTrees;
+        this.areaSize = areaSize;
+    }
+
+    treeDensity() {
+        console.log(`The total tree density of ${this.name} is: ${(this.numberOfTrees / this.areaSize).toFixed(2)} per square km.`);
+    }
+
+    static averageAge(totalAges, totalParks) {
+        console.log(`The average age of our town's parks is ${totalAges / totalParks} years.`);
+    }
+}
+
+
+// Park Instances array setup:
+const parkArr = [];
+const parkInstanceArr = function (name, year, treesNo, size) {
+    parkArr.push(new Park(name, year, treesNo, size));
+}
+
+function calcDensity(...instances) {
+    instances.forEach((instance) => {
+        instance.treeDensity();
+    });
+}
+setSize(...parkArr);
+
+// Park instance list:
+const daanPark = parkInstanceArr('Daan Park', 1940, 1300, 22);
+const neihuPark = parkInstanceArr('Neihu Park', 1982, 765, 13.3);
+const zhongzhengPark = parkInstanceArr('ZhongZheng Park', 1955, 980, 18.4);
+
+// Park Map:
+const parkMap = new Map();
+
+// Set map:
+function setParks(...instances) {
+    instances.forEach((instance, i) => {
+        parkMap.set(i, instance);
+    });
+}
+setParks(...parkArr);
+
+// Calculate total amount of parks:
+const totalParks = parkMap.size;
+
+// Calculate total ages:
+const CalculateAges = function () {
+    const currentYear = new Date().getFullYear();
+    agesArr = [];
+    for (let [key, value] of parkMap.entries()) {
+        agesArr.push(currentYear - value.buildYear);
+    }
+    const sum = agesArr.reduce((total, age) => {
+        return total + age;
+    }, 0);
+    return sum;
+}
+
+// Display parks with over 1000 trees:
+function thousandTrees() {
+    for (let [key, value] of parkMap.entries()) {
+        if (value.numberOfTrees >= 1000) console.log(`${value.parkName} has over 1000 trees, perceive amount is ${value.numberOfTrees} trees.`);
+    }
+}
+
+// Display report data - Streets:
+console.log(`---STREET REPORT---`);
+console.log('\n');
+Street.calcLength(totalLength(), streetMapSize);
+displayStreet(0);
+displayStreet(1);
+displayStreet(2);
+displayStreet(3);
+console.log(`\n`);
+
+// Display report data - Parks:
+console.log(`---PARKS REPORT---`);
+console.log(`\n`);
+Park.averageAge(CalculateAges(), totalParks);
+parkMap.get(0).treeDensity();
+parkMap.get(1).treeDensity();
+parkMap.get(2).treeDensity();
+thousandTrees();
+console.log(`\n`);
+console.log(`---END OF THE REPORT---`);
+
+// End of code
