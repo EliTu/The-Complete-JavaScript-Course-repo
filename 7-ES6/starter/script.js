@@ -748,181 +748,180 @@ johnAthlete6.wonMedal(); //-> 11
     // - Create an array of total amount of street instances(?).
 */
 // start code:
-
-// City assets superclass:
-class Assets {
-    constructor(name, buildYear) {
-        this.name = name;
-        this.buildYear = buildYear;
-    }
-}
-
-// Street subclass:
-class Street extends Assets {
-    constructor(name, buildYear, length, size = 'Normal') {
-        super(name, buildYear);
-        this.length = length;
-        this.size = size;
-    }
-
-    calcSize() {
-        if (this.length >= 20) {
-            this.size = 'Huge';
-        } else if (this.length >= 15 && this.length <= 20) {
-            this.size = 'Big';
-        } else if (this.length >= 10 && this.length <= 15) {
-            this.size = size;
-        } else {
-            this.size = 'Small';
+{
+    // City assets superclass:
+    class Assets {
+        constructor(name, buildYear) {
+            this.name = name;
+            this.buildYear = buildYear;
         }
-        return this.size;
     }
 
-    static calcLength(totalLength, totalStreets) {
-        console.log(`The average length of a street is ${(totalLength/ totalStreets).toFixed(2)} km, while the total length is ${totalLength} km.`);
-    }
-}
+    // Street subclass:
+    class Street extends Assets {
+        constructor(name, buildYear, length, size = 'Normal') {
+            super(name, buildYear);
+            this.length = length;
+            this.size = size;
+        }
 
-// Street instances array setup:
-const streetArr = [];
-const streetInstanceArr = function (name, year, length, size) {
-    streetArr.push(new Street(name, year, length, size));
-}
-// Street instances list:
-const shuiYuanSt = streetInstanceArr('ShuiYuan Street', 1950, 17.5);
-const daAnSt = streetInstanceArr('Daan Street', 1927, 22.3);
-const tongAnSt = streetInstanceArr('TongAn Street', 1962, 7);
-const pingAnSt = streetInstanceArr('PingAn Street', 1947, 19.1);
+        calcSize() {
+            if (this.length >= 20) {
+                this.size = 'Huge';
+            } else if (this.length >= 15 && this.length <= 20) {
+                this.size = 'Big';
+            } else if (this.length >= 10 && this.length <= 15) {
+                this.size = size;
+            } else {
+                this.size = 'Small';
+            }
+            return this.size;
+        }
 
-// Set street size:
-function setSize(...instances) {
-    instances.forEach((instance) => {
-        instance.calcSize();
-    });
-}
-setSize(...streetArr); // Call using spread operator.
-
-// Street map:
-const streetMap = new Map();
-
-// Set streets into the map: 
-function setStreet(...instances) {
-    instances.forEach((instance, i) => {
-        streetMap.set(i, instance);
-    });
-}
-setStreet(...streetArr); // Call using spread operator.
-
-// total streets:
-const streetMapSize = streetMap.size;
-
-// total length:
-const totalLength = function () {
-    const lengthArr = [];
-    for (let [key, value] of streetMap.entries()) {
-        lengthArr.push(value.length);
-    }
-    const sum = lengthArr.reduce((total, entry) => total + entry);
-    return sum;
-}
-
-// Average length: 
-const lengthAverage = totalLength / streetMapSize;
-
-// Display streets info:
-function displayStreet(key) {
-    console.log(`${streetMap.get(key).streetName}, built in ${streetMap.get(key).buildYear}, is a ${streetMap.get(key).size} street.`);
-}
-
-// Park class:
-class Park extends Assets {
-    constructor(name, buildYear, numberOfTrees, areaSize) {
-        super(name, buildYear);
-        this.numberOfTrees = numberOfTrees;
-        this.areaSize = areaSize;
+        static calcLength(totalLength, totalStreets) {
+            console.log(`The average length of a street is ${(totalLength/ totalStreets).toFixed(2)} km, while the total length is ${totalLength} km.`);
+        }
     }
 
-    treeDensity() {
-        console.log(`The total tree density of ${this.name} is: ${(this.numberOfTrees / this.areaSize).toFixed(2)} per square km.`);
+    // Street instances array setup:
+    const streetArr = [];
+    const streetInstanceArr = function (name, year, length, size) {
+        streetArr.push(new Street(name, year, length, size));
+    }
+    // Street instances list:
+    const shuiYuanSt = streetInstanceArr('ShuiYuan Street', 1950, 17.5);
+    const daAnSt = streetInstanceArr('Daan Street', 1927, 22.3);
+    const tongAnSt = streetInstanceArr('TongAn Street', 1962, 7);
+    const pingAnSt = streetInstanceArr('PingAn Street', 1947, 19.1);
+
+    // Set street size:
+    function setSize(...instances) {
+        instances.forEach((instance) => {
+            instance.calcSize();
+        });
+    }
+    setSize(...streetArr); // Call using spread operator.
+
+    // Street map:
+    const streetMap = new Map();
+
+    // Set streets into the map: 
+    function setStreet(...instances) {
+        instances.forEach((instance, i) => {
+            streetMap.set(i, instance);
+        });
+    }
+    setStreet(...streetArr); // Call using spread operator.
+
+    // total streets:
+    const streetMapSize = streetMap.size;
+
+    // total length:
+    const totalLength = function () {
+        const lengthArr = [];
+        for (let [key, value] of streetMap.entries()) {
+            lengthArr.push(value.length);
+        }
+        const sum = lengthArr.reduce((total, entry) => total + entry);
+        return sum;
     }
 
-    static averageAge(totalAges, totalParks) {
-        console.log(`The average age of our town's parks is ${totalAges / totalParks} years.`);
+    // Average length: 
+    const lengthAverage = totalLength / streetMapSize;
+
+    // Display streets info:
+    function displayStreet(key) {
+        console.log(`${streetMap.get(key).name}, built in ${streetMap.get(key).buildYear}, is a ${streetMap.get(key).size} street.`);
     }
-}
 
+    // Park class:
+    class Park extends Assets {
+        constructor(name, buildYear, numberOfTrees, areaSize) {
+            super(name, buildYear);
+            this.numberOfTrees = numberOfTrees;
+            this.areaSize = areaSize;
+        }
 
-// Park Instances array setup:
-const parkArr = [];
-const parkInstanceArr = function (name, year, treesNo, size) {
-    parkArr.push(new Park(name, year, treesNo, size));
-}
+        treeDensity() {
+            console.log(`The total tree density of ${this.name} is: ${(this.numberOfTrees / this.areaSize).toFixed(2)} per square km.`);
+        }
 
-function calcDensity(...instances) {
-    instances.forEach((instance) => {
-        instance.treeDensity();
-    });
-}
-setSize(...parkArr);
-
-// Park instance list:
-const daanPark = parkInstanceArr('Daan Park', 1940, 1300, 22);
-const neihuPark = parkInstanceArr('Neihu Park', 1982, 765, 13.3);
-const zhongzhengPark = parkInstanceArr('ZhongZheng Park', 1955, 980, 18.4);
-
-// Park Map:
-const parkMap = new Map();
-
-// Set map:
-function setParks(...instances) {
-    instances.forEach((instance, i) => {
-        parkMap.set(i, instance);
-    });
-}
-setParks(...parkArr);
-
-// Calculate total amount of parks:
-const totalParks = parkMap.size;
-
-// Calculate total ages:
-const CalculateAges = function () {
-    const currentYear = new Date().getFullYear();
-    agesArr = [];
-    for (let [key, value] of parkMap.entries()) {
-        agesArr.push(currentYear - value.buildYear);
+        static averageAge(totalAges, totalParks) {
+            console.log(`The average age of our town's parks is ${totalAges / totalParks} years.`);
+        }
     }
-    const sum = agesArr.reduce((total, age) => {
-        return total + age;
-    }, 0);
-    return sum;
-}
 
-// Display parks with over 1000 trees:
-function thousandTrees() {
-    for (let [key, value] of parkMap.entries()) {
-        if (value.numberOfTrees >= 1000) console.log(`${value.parkName} has over 1000 trees, perceive amount is ${value.numberOfTrees} trees.`);
+    // Park Instances array setup:
+    const parkArr = [];
+    const parkInstanceArr = function (name, year, treesNo, size) {
+        parkArr.push(new Park(name, year, treesNo, size));
     }
+
+    function calcDensity(...instances) {
+        instances.forEach((instance) => {
+            instance.treeDensity();
+        });
+    }
+    setSize(...parkArr);
+
+    // Park instance list:
+    const daanPark = parkInstanceArr('Daan Park', 1940, 1300, 22);
+    const neihuPark = parkInstanceArr('Neihu Park', 1982, 765, 13.3);
+    const zhongzhengPark = parkInstanceArr('ZhongZheng Park', 1955, 980, 18.4);
+
+    // Park Map:
+    const parkMap = new Map();
+
+    // Set map:
+    function setParks(...instances) {
+        instances.forEach((instance, i) => {
+            parkMap.set(i, instance);
+        });
+    }
+    setParks(...parkArr);
+
+    // Calculate total amount of parks:
+    const totalParks = parkMap.size;
+
+    // Calculate total ages:
+    const CalculateAges = function () {
+        const currentYear = new Date().getFullYear();
+        agesArr = [];
+        for (let [key, value] of parkMap.entries()) {
+            agesArr.push(currentYear - value.buildYear);
+        }
+        const sum = agesArr.reduce((total, age) => {
+            return total + age;
+        }, 0);
+        return sum;
+    }
+
+    // Display parks with over 1000 trees:
+    function thousandTrees() {
+        for (let [key, value] of parkMap.entries()) {
+            if (value.numberOfTrees >= 1000) console.log(`${value.parkName} has over 1000 trees, the precise amount is ${value.numberOfTrees} trees.`);
+        }
+    }
+
+    // Display report data - Streets:
+    console.log(`---STREET REPORT---`);
+    console.log('\n');
+    Street.calcLength(totalLength(), streetMapSize);
+    displayStreet(0);
+    displayStreet(1);
+    displayStreet(2);
+    displayStreet(3);
+    console.log(`\n`);
+
+    // Display report data - Parks:
+    console.log(`---PARKS REPORT---`);
+    console.log(`\n`);
+    Park.averageAge(CalculateAges(), totalParks);
+    parkMap.get(0).treeDensity();
+    parkMap.get(1).treeDensity();
+    parkMap.get(2).treeDensity();
+    thousandTrees();
+    console.log(`\n`);
+    console.log(`---END OF THE REPORT---`);
 }
-
-// Display report data - Streets:
-console.log(`---STREET REPORT---`);
-console.log('\n');
-Street.calcLength(totalLength(), streetMapSize);
-displayStreet(0);
-displayStreet(1);
-displayStreet(2);
-displayStreet(3);
-console.log(`\n`);
-
-// Display report data - Parks:
-console.log(`---PARKS REPORT---`);
-console.log(`\n`);
-Park.averageAge(CalculateAges(), totalParks);
-parkMap.get(0).treeDensity();
-parkMap.get(1).treeDensity();
-parkMap.get(2).treeDensity();
-thousandTrees();
-console.log(`\n`);
-console.log(`---END OF THE REPORT---`);
-
 // End of code
