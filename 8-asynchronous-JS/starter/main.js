@@ -172,28 +172,11 @@
 
              const todaysWeather = data.consolidated_weather[0];
 
-             console.log(`Temperatures in ${data.title} stay between ${todaysWeather.min_temp} and ${todaysWeather.max_temp}.`);
+             console.log(`On ${todaysWeather.applicable_date}, Temperatures in ${data.title} stay between ${todaysWeather.min_temp} and ${todaysWeather.max_temp}.`);
          })
          .catch(error => {
              console.log(error); // -> Log an error in case of request reject
          });
  }
- getWeather(2487956); // For San Francisco -> Temperatures in San Francisco stay between 10.005 and 12.09.
- getWeather(44418); // For London -> Temperatures in London stay between 5.76 and 14.805.
-
-
- //  fetch('https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/2487956/')
- //      .then(result => {
- //          console.log(result);
- //          return result.json() // -> returns a promise, needs to be parsed from a string to JSON.
- //      })
- //      .then(data => {
- //          console.log(data); //-> {consolidated_weather: Array(6), time: "2019-03-20T01:25:37.634494-07:00", sun_rise:...
-
- //          const todaysWeather = data.consolidated_weather[0];
-
- //          console.log(`Temperatures in ${data.title} stay between ${todaysWeather.min_temp} and ${todaysWeather.max_temp}.`); // -> Temperatures in San Francisco stay between 10.005 and 12.09.
- //      })
- //      .catch(error => {
- //          console.log(error); // -> Log an error in case of request reject
- //      });
+ getWeather(2487956); // For San Francisco -> On 2019-03-20, Temperatures in San Francisco stay between 10.415 and 12.09.
+ getWeather(44418); // For London -> On 2019-03-20, Temperatures in London stay between 7.1 and 16.05.
