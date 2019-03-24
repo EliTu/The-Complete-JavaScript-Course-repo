@@ -162,10 +162,12 @@
  /*********************************************
   * Making AJAX calls with 'fetch' and Promises (Section 8, lecture 126)
   */
+ /* Commenting out lecture code:
+
  function getWeather(woeId) {
      fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeId}/`)
          .then(result => {
-             return result.json() // -> returns a promise, needs to be parsed from a string to JSON.
+             return result.json(); // -> returns a promise, needs to be parsed from a string to JSON.
          })
          .then(data => {
              console.log(data); //-> {consolidated_weather: Array(6), time: "2019-03-20T01:25:37.634494-07:00", sun_rise:...
@@ -180,3 +182,33 @@
  }
  getWeather(2487956); // For San Francisco -> On 2019-03-20, Temperatures in San Francisco stay between 10.415 and 12.09.
  getWeather(44418); // For London -> On 2019-03-20, Temperatures in London stay between 7.1 and 16.05.
+ */
+
+ /**********************************************
+  * Making AJAX calls with async / await (Section 8, lecture 127)
+  */
+
+ async function getWeather(woeId) {
+ 	try {
+
+ 		const result = await fetch(`https://cors-anywhere.herokuapp.com/https://www.metaweather.com/api/location/${woeId}/`);
+
+ 		const data = await result.json();
+ 		const weatherReports = data.consolidated_weather;
+
+ 		weatherReports.forEach((report, i) => {
+ 			if (i <= 1)
+ 				console.log(`On ${report.applicable_date}, Temperatures in ${data.title} stay between ${report.min_temp} and ${report.max_temp}.`);
+ 		});
+ 		return data; // return the result of the promise
+
+ 	} catch (error) {
+ 		console.log(error);
+ 	}
+ }
+ getWeather(2487956);
+ getWeather(44418);
+
+ let fetchData = getWeather(44418).then((data) => {
+ 	console.log(data);
+ });
