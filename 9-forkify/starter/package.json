@@ -14,7 +14,7 @@
   ],
   "author": "Eliad Tuksher",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "webpack": "^4.29.6"
   }
 }
