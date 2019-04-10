@@ -1,13 +1,17 @@
 // Imports:
 import Search from './models/Search';
+import * as searchView from './views/searchView';
+import {
+    elements
+} from './views/base';
 
 // The global state variable:
 const state = {
     /* Global state of the app:
-    - Search object
-    - Current recpie object
-    - Shopping list object
-    - Liked recipe
+    * Search object
+    TODO - Current recpie object
+    TODO - Shopping list object
+    TODO - Liked recipe
     */
 };
 
@@ -18,25 +22,24 @@ const controlSearch = async (e) => {
     // Prevent the page from reloading upon pressing the search button:
     e.preventDefault();
 
-    // Get the query from the view:
-    const searchFieldValue = document.querySelector('.search__field').value;
+    // Get the query from the view model:
+    const query = searchView.getInput();
 
-    const query = searchFieldValue; // To be moved to the view model eventually 
 
     if (query) {
         // New search object, and add it to state:
         state.search = new Search(query);
 
-        // Prepare the UI for the results:
+        // Prepare the UI for the results - clear input, loader:
+        searchView.clearInput();
+        searchView.clearResults();
 
         // Search for recipes by making an API call:
         await state.search.getResults();
 
         // Render results on UI:
-        console.log(state.search.result);
+        searchView.renderResults(state.search.result);
     }
-}
+};
 
-const searchInput = document.querySelector('.search');
-
-searchInput.addEventListener('submit', controlSearch);
+elements.searchContainer.addEventListener('submit', controlSearch);
