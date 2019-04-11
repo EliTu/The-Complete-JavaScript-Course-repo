@@ -6,14 +6,18 @@ import {
 // Get the value of search input:
 export const getInput = () => elements.searchInput.value;
 
+// Clear the search input field after pressing the button:
 export const clearInput = () => {
-    elements.searchInput.value = ''
+    elements.searchInput.value = '';
+    elements.searchInput.focus();
 };
 
+// Clear the previous results after pressing the button:
 export const clearResults = () => {
     elements.searchResultsList.innerHTML = '';
 };
 
+// Create the HTML template to display the search results:
 const renderRecipe = recipe => {
     const recipeResultTemplate = `
                 <li>
@@ -32,6 +36,7 @@ const renderRecipe = recipe => {
     elements.searchResultsList.insertAdjacentHTML('afterend', recipeResultTemplate);
 };
 
+// Get the search results, loop over them and apply the template:
 export const renderResults = results => {
     results.forEach(renderRecipe);
 };
