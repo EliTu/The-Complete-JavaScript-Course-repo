@@ -1,6 +1,7 @@
 // Imports:
 import {
-    elements
+    elements,
+    elementStrings
 } from './base';
 
 // Get the value of search input:
@@ -14,7 +15,12 @@ export const clearInput = () => {
 
 // Clear the previous results after pressing the button:
 export const clearResults = () => {
-    elements.searchResultsList.innerHTML = '';
+    // Search result items
+    const searchRecipeItems = document.querySelectorAll(`.${elementStrings.searchItem}`);
+
+    // If there are items in the container, remove them
+    if (searchRecipeItems)
+        searchRecipeItems.forEach(item => item.remove());
 };
 
 // Set the recipe title name to ... if over 17 characters long:
@@ -42,7 +48,7 @@ const limitRecipeTitle = (recipeTitle, limit = 17) => {
 // Create the HTML template to display the search results data:
 const renderRecipe = recipe => {
     const recipeResultTemplate = `
-                <li>
+                <li class="search-item">
                     <a class="results__link" href="${recipe.recipe_id}">
                         <figure class="results__fig">
                             <img src="${recipe.image_url}"

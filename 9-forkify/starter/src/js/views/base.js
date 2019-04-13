@@ -8,7 +8,9 @@ export const elements = {
 
 // Object that contains all of the relevant DOM element strings:
 export const elementStrings = {
-    loader: 'loader'
+    loader: 'loader',
+    searchItem: 'search-item'
+
 };
 
 // Create a loader HTML template and append it:
@@ -26,5 +28,5 @@ export const renderLoader = parent => {
 // Remove the loader from the UI:
 export const removeLoader = () => {
     const loader = document.querySelector(`.${elementStrings.loader}`);
-    if (loader) loader.parentElement.removeChild(loader);
+    loader.parentElement.removeChild(loader);
 };
