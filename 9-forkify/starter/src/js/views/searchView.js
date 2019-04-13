@@ -25,11 +25,11 @@ const limitRecipeTitle = (recipeTitle, limit = 17) => {
 
     //  Check to see if the title is longer than 17 chars:
     if (recipeTitle.length > limit) {
-        recipeTitle.split(' ').reduce((total, char) => {
-            if (total + char.length <= limit) {
-                newTitle.push(char);
+        recipeTitle.split(' ').reduce((total, word) => {
+            if (total + word.length <= limit) {
+                newTitle.push(word);
             }
-            return total + char.length;
+            return total + word.length;
         }, 0);
 
         // Return the new title by converting the array into string and adding '...'.

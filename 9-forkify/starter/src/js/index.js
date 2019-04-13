@@ -2,7 +2,9 @@
 import Search from './models/Search';
 import * as searchView from './views/searchView';
 import {
-    elements
+    elements,
+    renderLoader,
+    removeLoader
 } from './views/base';
 
 // The global state variable:
@@ -30,14 +32,16 @@ const controlSearch = async (e) => {
         // New search object, and add it to state:
         state.search = new Search(query);
 
-        // Prepare the UI for the results - clear input, loader:
+        // Prepare the UI for the results - clear input, loader: 
         searchView.clearInput();
         searchView.clearResults();
+        renderLoader(elements.resultsContainer);
 
         // Search for recipes by making an API call:
         await state.search.getResults();
 
         // Render results on UI:
+        removeLoader();
         searchView.renderResults(state.search.result);
     }
 };
