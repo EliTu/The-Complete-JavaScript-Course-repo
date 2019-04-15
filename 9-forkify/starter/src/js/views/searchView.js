@@ -21,6 +21,9 @@ export const clearResults = () => {
     // If there are items in the container, remove them
     if (searchRecipeItems)
         searchRecipeItems.forEach(item => item.remove());
+
+    // Remove pagination buttons before rendering new ones to the UI:
+    elements.searchResultPages.innerHTML = '';
 };
 
 // Set the recipe title name to ... if over 17 characters long:
@@ -65,7 +68,47 @@ const renderRecipe = recipe => {
     elements.searchResultsList.insertAdjacentHTML('afterend', recipeResultTemplate);
 };
 
+// Create an HTML template for the pagination buttons:
+const setButtonTemplate = (pageNum, type) => {
+    const changePage = type === 'prev' ? pageNum - 1 : pageNum + 1;
+    const setIconDirection = type === 'prev' ? 'left' : 'right';
+    return `
+                <button class="btn-inline results__btn--${type}"
+                data-goto="${changePage}">
+                <span>Page ${changePage}</span>
+                    <svg class="search__icon">
+                        <use href="img/icons.svg#icon-triangle-${setIconDirection}"></use>
+                    </svg>
+                </button>
+                `;
+}
+
+// Render the pagination buttons to the UI:
+const renderPaginationButtons = (page, numOfResults, resultsPerPage) => {
+    const calculatePageNum = Math.ceil(numOfResults / resultsPerPage);
+    let button;
+
+    if (page === 1 && calculatePageNum > 1) {
+        button = setButtonTemplate(page, 'next');
+    } else if (page < calculatePageNum) {
+        button = `
+            ${setButtonTemplate(page, 'next')}
+            ${setButtonTemplate(page, 'prev')}
+            `;
+    } else if (page === calculatePageNum && calculatePageNum > 1) {
+        button = setButtonTemplate(page, 'prev');
+    }
+
+    elements.searchResultPages.insertAdjacentHTML('afterbegin', button);
+};
+
 // Get the search results, loop over them and apply the template:
-export const renderResults = results => {
-    results.forEach(renderRecipe);
+export const renderResults = (results, page = 1, resultsPerPage = 10) => {
+    // Render results of current page:
+    const start = (page - 1) * resultsPerPage;
+    const end = page * resultsPerPage;
+    results.slice(start, end).forEach(renderRecipe);
+
+    // Render pagination buttons:
+    renderPaginationButtons(page, results.length, resultsPerPage);
 };

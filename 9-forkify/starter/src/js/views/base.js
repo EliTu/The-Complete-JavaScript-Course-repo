@@ -3,7 +3,8 @@ export const elements = {
     searchInput: document.querySelector('.search__field'),
     searchContainer: document.querySelector('.search'),
     searchResultsList: document.querySelector('.results__list'),
-    resultsContainer: document.querySelector('.results')
+    resultsContainer: document.querySelector('.results'),
+    searchResultPages: document.querySelector(`.results__pages`),
 };
 
 // Object that contains all of the relevant DOM element strings:

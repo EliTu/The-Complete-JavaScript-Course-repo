@@ -45,4 +45,16 @@ const controlSearch = async (e) => {
     }
 };
 
+// Pagination button navigation function:
+const moveToPage = (e) => {
+    const button = e.target.closest('.btn-inline');
+    if (button) {
+        const goToPage = parseInt(button.dataset.goto, 10);
+        searchView.clearResults();
+        searchView.renderResults(state.search.result, goToPage);
+    }
+};
+
+// Event listeners:
 elements.searchContainer.addEventListener('submit', controlSearch);
+elements.searchResultPages.addEventListener('click', moveToPage);
