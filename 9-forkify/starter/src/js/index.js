@@ -1,11 +1,13 @@
 // Imports:
 import Search from './models/Search';
+import recipe from './models/Recipe';
 import * as searchView from './views/searchView';
 import {
     elements,
     renderLoader,
     removeLoader
 } from './views/base';
+import Recipe from './models/Recipe';
 
 // The global state variable:
 const state = {
@@ -17,8 +19,10 @@ const state = {
     */
 };
 
+/*
+ * Search Controller:
+ */
 // Search input event listeners:
-
 const controlSearch = async (e) => {
 
     // Prevent the page from reloading upon pressing the search button:
@@ -45,7 +49,7 @@ const controlSearch = async (e) => {
     }
 };
 
-// Pagination button navigation function:
+// Search list pagination button navigation:
 const moveToPage = (e) => {
     const button = e.target.closest('.btn-inline');
     if (button) {
@@ -55,6 +59,13 @@ const moveToPage = (e) => {
     }
 };
 
-// Event listeners:
+// Search controller Event listeners:
 elements.searchContainer.addEventListener('submit', controlSearch);
 elements.searchResultPages.addEventListener('click', moveToPage);
+
+/*
+ * Recipe controller:
+ */
+const el = new Recipe(47651);
+el.getRecipe();
+console.log(el);
