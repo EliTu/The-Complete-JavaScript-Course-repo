@@ -52,7 +52,7 @@ const limitRecipeTitle = (recipeTitle, limit = 17) => {
 const renderRecipe = (recipe) => {
     const recipeResultTemplate = `
                 <li class="search-item">
-                    <a class="results__link" href="${recipe.recipe_id}">
+                    <a class="results__link" href="#${recipe.recipe_id}">
                         <figure class="results__fig">
                             <img src="${recipe.image_url}"
                             alt = "${recipe.title}" >

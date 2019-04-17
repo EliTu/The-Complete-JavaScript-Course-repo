@@ -12,7 +12,7 @@ import Recipe from './models/Recipe';
 const state = {
     /* Global state of the app:
     * Search object
-    TODO - Current recpie object
+    * Current recpie object
     TODO - Shopping list object
     TODO - Liked recipe
     */
@@ -37,13 +37,17 @@ const controlSearch = async (e) => {
         searchView.clearInput();
         searchView.clearResults();
         renderLoader(elements.resultsContainer);
+        try {
+            // Search for recipes by making an API call:
+            await state.search.getResults();
 
-        // Search for recipes by making an API call:
-        await state.search.getResults();
-
-        // Render results on UI:
-        removeLoader();
-        searchView.renderResults(state.search.result);
+            // Render results on UI:
+            removeLoader();
+            searchView.renderResults(state.search.result);
+        } catch (error) {
+            removeLoader();
+            console.log('Something went wrong!');
+        }
     }
 };
 
@@ -64,6 +68,36 @@ elements.searchResultPages.addEventListener('click', moveToPage);
 /*
  * Recipe controller:
  */
-const el = new Recipe(47651);
-el.getRecipe();
-console.log(el);
+const controlRecipe = async () => {
+    // Get search item id from the URL:
+    const id = window.location.hash.replace('#', '');
+    console.log(id);
+
+    // If there is an search item id available:
+    if (id) {
+        // Prepare the UI for changes
+        renderLoader(elements.recipeContainer);
+
+        // Create new recipe object
+        state.recipe = new Recipe(id);
+
+        try {
+            // Get recipe data
+            await state.recipe.getRecipe();
+
+            // Calculate servings and time
+            state.recipe.calculateServings();
+            state.recipe.calculateTime();
+
+            // Render the recipe
+            removeLoader();
+            console.log(state.recipe);
+        } catch (error) {
+            removeLoader();
+            console.log('Something went wrong!');
+        }
+    }
+};
+
+// Add multiple events to the same element and function:
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
