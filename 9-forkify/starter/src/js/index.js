@@ -1,11 +1,10 @@
 // Imports:
 import Search from './models/Search';
-import recipe from './models/Recipe';
 import * as searchView from './views/searchView';
 import {
     elements,
     renderLoader,
-    removeLoader
+    removeLoader,
 } from './views/base';
 import Recipe from './models/Recipe';
 
@@ -24,7 +23,6 @@ const state = {
  */
 // Search input event listeners:
 const controlSearch = async (e) => {
-
     // Prevent the page from reloading upon pressing the search button:
     e.preventDefault();
 
@@ -35,7 +33,7 @@ const controlSearch = async (e) => {
         // New search object, and add it to state:
         state.search = new Search(query);
 
-        // Prepare the UI for the results - clear input, loader: 
+        // Prepare the UI for the results - clear input, loader:
         searchView.clearInput();
         searchView.clearResults();
         renderLoader(elements.resultsContainer);

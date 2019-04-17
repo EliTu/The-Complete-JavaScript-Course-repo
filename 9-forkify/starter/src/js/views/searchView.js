@@ -1,7 +1,7 @@
 // Imports:
 import {
     elements,
-    elementStrings
+    elementStrings,
 } from './base';
 
 // Get the value of search input:
@@ -19,8 +19,9 @@ export const clearResults = () => {
     const searchRecipeItems = document.querySelectorAll(`.${elementStrings.searchItem}`);
 
     // If there are items in the container, remove them
-    if (searchRecipeItems)
+    if (searchRecipeItems) {
         searchRecipeItems.forEach(item => item.remove());
+    }
 
     // Remove pagination buttons before rendering new ones to the UI:
     elements.searchResultPages.innerHTML = '';
@@ -28,7 +29,6 @@ export const clearResults = () => {
 
 // Set the recipe title name to ... if over 17 characters long:
 const limitRecipeTitle = (recipeTitle, limit = 17) => {
-
     // Array to hold split strings.
     const newTitle = [];
 
@@ -49,7 +49,7 @@ const limitRecipeTitle = (recipeTitle, limit = 17) => {
 };
 
 // Create the HTML template to display the search results data:
-const renderRecipe = recipe => {
+const renderRecipe = (recipe) => {
     const recipeResultTemplate = `
                 <li class="search-item">
                     <a class="results__link" href="${recipe.recipe_id}">
@@ -81,7 +81,7 @@ const setButtonTemplate = (pageNum, type) => {
                     </svg>
                 </button>
                 `;
-}
+};
 
 // Render the pagination buttons to the UI:
 const renderPaginationButtons = (page, numOfResults, resultsPerPage) => {

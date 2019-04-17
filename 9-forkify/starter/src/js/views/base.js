@@ -4,18 +4,17 @@ export const elements = {
     searchContainer: document.querySelector('.search'),
     searchResultsList: document.querySelector('.results__list'),
     resultsContainer: document.querySelector('.results'),
-    searchResultPages: document.querySelector(`.results__pages`),
+    searchResultPages: document.querySelector('.results__pages'),
 };
 
 // Object that contains all of the relevant DOM element strings:
 export const elementStrings = {
     loader: 'loader',
-    searchItem: 'search-item'
-
+    searchItem: 'search-item',
 };
 
 // Create a loader HTML template and append it:
-export const renderLoader = parent => {
+export const renderLoader = (parent) => {
     const loader = `
         <div class = "${elementStrings.loader}">
             <svg>
