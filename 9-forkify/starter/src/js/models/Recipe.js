@@ -45,6 +45,9 @@ export default class Recipe {
         const oldUnits = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds'];
         // The units we want to have for our code:
         const newUnits = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
+        // Other units, like grams etc
+        const units = [...newUnits, 'kg', 'g'];
+
         const newIngredients = this.ingredients.map((item) => {
             // Standardize units by looping over the old units and replacing them with new ones:
             let ingredient = item.toLowerCase();
@@ -57,7 +60,7 @@ export default class Recipe {
 
             // Parse ingredients into count, unit and ingredient
             const ingredientArr = ingredient.split(' ');
-            const unitIndex = ingredientArr.findIndex(el => newUnits.includes(el));
+            const unitIndex = ingredientArr.findIndex(el => units.includes(el));
 
             let objIngredient;
             if (unitIndex > -1) {
@@ -71,11 +74,14 @@ export default class Recipe {
                 if (arrCount.length === 1) {
                     count = fractionStrToDecimal(ingredientArr[0].replace('-', '+'));
                 } else {
-                    count = fractionStrToDecimal(ingredientArr.slice(0, unitIndex).join('+'));
+                    console.log(ingredientArr.slice(0, unitIndex));
+                    const integer = Number(ingredientArr.slice(0, unitIndex)[0]);
+                    const decimal = fractionStrToDecimal(ingredientArr.slice(0, unitIndex)[1]);
+                    count = Number([integer + decimal]);
                 }
 
                 objIngredient = {
-                    count: Number(count),
+                    count,
                     unit: ingredientArr[unitIndex],
                     ingredient: ingredientArr.slice(unitIndex + 1).join(' '),
                 };
@@ -94,7 +100,7 @@ export default class Recipe {
                     ingredient,
                 };
             }
-            // console.log(objIngredient);
+            console.log(objIngredient);
             return objIngredient;
         });
         this.ingredients = newIngredients;

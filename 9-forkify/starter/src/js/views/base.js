@@ -27,8 +27,7 @@ export const renderLoader = (parent) => {
 };
 
 // Remove the loader from the UI:
-export const removeLoader = (parent) => {
+export const removeLoader = () => {
     const loader = document.querySelector('.loader');
-
-    loader.parent.removeChild(loader);
+    if (loader) loader.parentElement.removeChild(loader);
 };

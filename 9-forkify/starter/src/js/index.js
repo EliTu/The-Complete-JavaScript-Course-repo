@@ -46,7 +46,7 @@ const controlSearch = async (e) => {
             removeLoader();
             searchView.renderResults(state.search.result);
         } catch (error) {
-            // removeLoader();
+            removeLoader();
             console.log('Something went wrong!');
         }
     }
@@ -76,6 +76,7 @@ const controlRecipe = async () => {
     // If there is an search item id available:
     if (id) {
         // Prepare the UI for changes
+        recipeView.clearRecipe();
         renderLoader(elements.recipeContainer);
 
         // Create new recipe object
@@ -84,6 +85,7 @@ const controlRecipe = async () => {
         try {
             // Get recipe data and parse ingredients
             await state.recipe.getRecipe();
+            console.log(state.recipe);
             state.recipe.parseIngredients();
 
             // Calculate servings and time
@@ -91,7 +93,7 @@ const controlRecipe = async () => {
             state.recipe.calculateTime();
 
             // Render the recipe
-            removeLoader(elements.recipeContainer);
+            removeLoader();
             recipeView.renderRecipe(state.recipe);
         } catch (error) {
             console.log(error);

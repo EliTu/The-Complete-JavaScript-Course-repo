@@ -4,11 +4,13 @@ import {
     elements,
 } from './base';
 
+export const clearRecipe = () => elements.recipeContainer.innerHTML = '';
+
 // Ingredient template:
 const createIngredient = ingredient => `       
      <li class="recipe__item"                                           <svg class="recipe__icon">
             <use href="img/icons.svg#icon-check"></use>
-        </svg>s
+        </svg>
         <div class="recipe__count">${ingredient.count}</div>
         <div class="recipe__ingredient">
           <span class="recipe__unit">${ingredient.unit}</span>${ingredient.ingredient}
@@ -19,9 +21,9 @@ const createIngredient = ingredient => `
 // Create the recipe HTML template:
 export const renderRecipe = (recipe) => {
     const template = `<figure class="recipe__fig">
-                <img src="${recipe.img}" alt="${recipe.title}" class="recipe__img">
-                <h1 class = "${recipe.title}">
-                    <span>Pasta with tomato cream sauce</span>
+                <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img">
+                <h1 class = "recipe__title">
+                    <span>${recipe.title}</span>
                 </h1>
             </figure>
             <div class="recipe__details">
