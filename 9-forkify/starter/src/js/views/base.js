@@ -17,7 +17,7 @@ export const elementStrings = {
 // Create a loader HTML template and append it:
 export const renderLoader = (parent) => {
     const loader = `
-        <div class = "${elementStrings.loader}">
+        <div class="${elementStrings.loader}">
             <svg>
                 <use href="img/icons.svg#icon-cw"></use>
             </svg>
@@ -27,7 +27,8 @@ export const renderLoader = (parent) => {
 };
 
 // Remove the loader from the UI:
-export const removeLoader = () => {
-    const loader = document.querySelector(`.${elementStrings.loader}`);
-    loader.parentElement.removeChild(loader);
+export const removeLoader = (parent) => {
+    const loader = document.querySelector('.loader');
+
+    loader.parent.removeChild(loader);
 };

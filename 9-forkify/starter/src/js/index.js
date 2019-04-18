@@ -1,12 +1,13 @@
 // Imports:
 import Search from './models/Search';
+import Recipe from './models/Recipe';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
 import {
     elements,
     renderLoader,
     removeLoader,
 } from './views/base';
-import Recipe from './models/Recipe';
 
 // The global state variable:
 const state = {
@@ -45,7 +46,7 @@ const controlSearch = async (e) => {
             removeLoader();
             searchView.renderResults(state.search.result);
         } catch (error) {
-            removeLoader();
+            // removeLoader();
             console.log('Something went wrong!');
         }
     }
@@ -71,7 +72,6 @@ elements.searchResultPages.addEventListener('click', moveToPage);
 const controlRecipe = async () => {
     // Get search item id from the URL:
     const id = window.location.hash.replace('#', '');
-    console.log(id);
 
     // If there is an search item id available:
     if (id) {
@@ -91,11 +91,10 @@ const controlRecipe = async () => {
             state.recipe.calculateTime();
 
             // Render the recipe
-            removeLoader();
-            console.log(state.recipe);
+            removeLoader(elements.recipeContainer);
+            recipeView.renderRecipe(state.recipe);
         } catch (error) {
-            removeLoader();
-            console.log('Something went wrong!');
+            console.log(error);
         }
     }
 };
