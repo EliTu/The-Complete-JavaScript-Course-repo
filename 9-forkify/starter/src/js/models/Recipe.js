@@ -61,21 +61,21 @@ export default class Recipe {
 
             let objIngredient;
             if (unitIndex > -1) {
-                // If there is a unit
-                const arrCount = ingredientArr.slice(0, unitIndex);
+                // // If there is a unit
+                // const arrCount = ingredientArr.slice(0, unitIndex);
 
-                let count;
-                if (arrCount.length === 1) {
-                    count = parseInt(ingredientArr[0].replace('-', '+'), 10);
-                } else {
-                    count = parseInt(ingredientArr.slice(0, unitIndex).join('+'), 10);
-                }
+                // let count;
+                // if (arrCount.length === 1) {
+                //     count = parseInt(ingredientArr[0].replace('-', '+'), 10);
+                // } else {
+                //     count = parseInt(ingredientArr.slice(0, unitIndex).join('+'), 10);
+                // }
 
-                objIngredient = {
-                    count,
-                    unit: ingredientArr[unitIndex],
-                    ingredient: ingredientArr.slice(unitIndex + 1).join(' '),
-                };
+                // objIngredient = {
+                //     count,
+                //     unit: ingredientArr[unitIndex],
+                //     ingredient: ingredientArr.slice(unitIndex + 1).join(' '),
+                // };
             } else if (parseInt(ingredientArr[0], 10)) {
                 // If there is no unit, but the 1st element is a number
                 objIngredient = {
