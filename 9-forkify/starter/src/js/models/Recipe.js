@@ -61,21 +61,24 @@ export default class Recipe {
 
             let objIngredient;
             if (unitIndex > -1) {
-                // // If there is a unit
-                // const arrCount = ingredientArr.slice(0, unitIndex);
+                // If there is a unit
+                const arrCount = ingredientArr.slice(0, unitIndex);
 
-                // let count;
-                // if (arrCount.length === 1) {
-                //     count = parseInt(ingredientArr[0].replace('-', '+'), 10);
-                // } else {
-                //     count = parseInt(ingredientArr.slice(0, unitIndex).join('+'), 10);
-                // }
+                // To avoid eval: convert fractions to decimals
+                const fractionStrToDecimal = str => str.split('/').reduce((p, c) => p / c);
 
-                // objIngredient = {
-                //     count,
-                //     unit: ingredientArr[unitIndex],
-                //     ingredient: ingredientArr.slice(unitIndex + 1).join(' '),
-                // };
+                let count;
+                if (arrCount.length === 1) {
+                    count = fractionStrToDecimal(ingredientArr[0].replace('-', '+'));
+                } else {
+                    count = fractionStrToDecimal(ingredientArr.slice(0, unitIndex).join('+'));
+                }
+
+                objIngredient = {
+                    count: Number(count),
+                    unit: ingredientArr[unitIndex],
+                    ingredient: ingredientArr.slice(unitIndex + 1).join(' '),
+                };
             } else if (parseInt(ingredientArr[0], 10)) {
                 // If there is no unit, but the 1st element is a number
                 objIngredient = {
@@ -91,7 +94,7 @@ export default class Recipe {
                     ingredient,
                 };
             }
-
+            // console.log(objIngredient);
             return objIngredient;
         });
         this.ingredients = newIngredients;
