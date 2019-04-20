@@ -65,6 +65,7 @@ export default class Recipe {
             const unitIndex = ingredientArr.findIndex(el => units.includes(el));
 
             let objIngredient;
+            const ingredientAmountUnit = ingredientArr[0];
             if (unitIndex > -1) {
                 // If there is a unit
                 const arrCount = ingredientArr.slice(0, unitIndex);
@@ -74,10 +75,10 @@ export default class Recipe {
 
                 let count;
                 if (arrCount.length === 1) {
-                    if (Number.isInteger(Number(ingredientArr[0]))) {
-                        count = Number(fractionStrToDecimal(ingredientArr[0]));
+                    if (Number.isInteger(Number(ingredientAmountUnit))) {
+                        count = Number(fractionStrToDecimal(ingredientAmountUnit));
                     } else {
-                        count = Number(fractionStrToDecimal(ingredientArr[0])).toFixed(1);
+                        count = Number(fractionStrToDecimal(ingredientAmountUnit)).toFixed(1);
                     }
                 } else {
                     const integer = Number(ingredientArr.slice(0, unitIndex)[0]);
@@ -91,10 +92,10 @@ export default class Recipe {
                     unit: ingredientArr[unitIndex],
                     ingredient: ingredientArr.slice(unitIndex + 1).join(' '),
                 };
-            } else if (parseInt(ingredientArr[0], 10)) {
+            } else if (parseInt(ingredientAmountUnit, 10)) {
                 // If there is no unit, but the 1st element is a number
                 objIngredient = {
-                    count: parseInt(ingredientArr[0], 10),
+                    count: parseInt(ingredientAmountUnit, 10),
                     unit: '',
                     ingredient: ingredientArr.slice(1).join(' '),
                 };
