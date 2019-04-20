@@ -7,6 +7,7 @@ import {
     elements,
     renderLoader,
     removeLoader,
+    elementStrings,
 } from './views/base';
 
 // The global state variable:
@@ -106,3 +107,15 @@ const controlRecipe = async () => {
 
 // Add multiple events to the same element and function:
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+
+// Event listeners for recipe '+' and '-' buttons:
+elements.recipeContainer.addEventListener('click', (e) => {
+    if (e.target.matches('.btn-decrease, .btn-decrease *')) {
+        if (state.recipe.servings > 1) state.recipe.updateServings('dec');
+        recipeView.updateServingsAndIngredients(state.recipe);
+    } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsAndIngredients(state.recipe);
+    }
+    console.log(state.recipe);
+});

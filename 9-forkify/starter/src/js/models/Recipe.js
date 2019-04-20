@@ -1,3 +1,5 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-param-reassign */
 // Imports:
 import axios from 'axios';
 import {
@@ -72,7 +74,11 @@ export default class Recipe {
 
                 let count;
                 if (arrCount.length === 1) {
-                    count = Number(fractionStrToDecimal(ingredientArr[0].replace('-', '+')));
+                    if (Number.isInteger(Number(ingredientArr[0]))) {
+                        count = Number(fractionStrToDecimal(ingredientArr[0]));
+                    } else {
+                        count = Number(fractionStrToDecimal(ingredientArr[0])).toFixed(1);
+                    }
                 } else {
                     const integer = Number(ingredientArr.slice(0, unitIndex)[0]);
                     const decimal = fractionStrToDecimal(ingredientArr.slice(0, unitIndex)[1]);
@@ -104,5 +110,16 @@ export default class Recipe {
             return objIngredient;
         });
         this.ingredients = newIngredients;
+    }
+
+    // Update the servings and ingredients upon clicking '-' or '+'
+    updateServings(type) {
+        // Update the servings
+        const newServings = type === 'dec' ? this.servings - 1 : this.servings + 1;
+
+        // Update the Ingredients
+        this.ingredients.forEach(ingredient => ingredient.count *= (newServings / this.servings));
+
+        this.servings = newServings;
     }
 }
