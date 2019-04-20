@@ -1,19 +1,40 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable import/prefer-default-export */
 // Imports:
+import {
+    Fraction,
+} from 'fractional';
 import {
     elements,
 } from './base';
 
+// Clear the previous recipe when calling for a new one:
 export const clearRecipe = () => elements.recipeContainer.innerHTML = '';
+
+// Use 'Fractional' library to convert ingredient decimals to fractions:
+const formatCount = (count) => {
+    if (count) {
+        // Parse the number to a string, split it at the decimal and then convert it back to a number:
+        const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));
+        if (!dec) return count;
+        if (int === 0) {
+            const fraction = new Fraction(count);
+            return `${fraction.numerator}/${fraction.denominator}`;
+        }
+        const fraction = new Fraction(count - int);
+        return `${int} ${fraction.numerator}/${fraction.denominator}`;
+    }
+    return '';
+};
 
 // Ingredient template:
 const createIngredient = ingredient => `       
      <li class="recipe__item"                                           <svg class="recipe__icon">
             <use href="img/icons.svg#icon-check"></use>
         </svg>
-        <div class="recipe__count">${ingredient.count}</div>
+        <div class="recipe__count"> ${formatCount(ingredient.count)}</div>
         <div class="recipe__ingredient">
-          <span class="recipe__unit">${ingredient.unit}</span>${ingredient.ingredient}
+          <span class="recipe__unit"> ${ingredient.unit}</span> ${ingredient.ingredient}
         </div>
     </li>
 `;

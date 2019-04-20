@@ -42,17 +42,17 @@ export default class Recipe {
 
     parseIngredients() {
         // Instances of units we get from the API call data:
-        const oldUnits = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds'];
+        const oldUnits = ['tablespoons', 'tablespoon', 'ounces', 'ounce', 'teaspoons', 'teaspoon', 'cups', 'pounds', 'kilograms', 'grams', 'g'];
         // The units we want to have for our code:
         const newUnits = ['tbsp', 'tbsp', 'oz', 'oz', 'tsp', 'tsp', 'cup', 'pound'];
         // Other units, like grams etc
-        const units = [...newUnits, 'kg', 'g'];
+        const units = [...newUnits, 'kg', 'g', 'g'];
 
         const newIngredients = this.ingredients.map((item) => {
             // Standardize units by looping over the old units and replacing them with new ones:
             let ingredient = item.toLowerCase();
             oldUnits.forEach((unit, i) => {
-                ingredient = ingredient.replace(unit, newUnits[i]);
+                ingredient = ingredient.replace(unit, units[i]);
             });
 
             // Remove parentheses
@@ -77,6 +77,7 @@ export default class Recipe {
                     console.log(ingredientArr.slice(0, unitIndex));
                     const integer = Number(ingredientArr.slice(0, unitIndex)[0]);
                     const decimal = fractionStrToDecimal(ingredientArr.slice(0, unitIndex)[1]);
+
                     count = Number([integer + decimal]);
                 }
 
@@ -95,7 +96,7 @@ export default class Recipe {
             } else if (unitIndex === -1) {
                 // There is no unit and no number in 1st position
                 objIngredient = {
-                    count: 1,
+                    count: '',
                     unit: '',
                     ingredient,
                 };
