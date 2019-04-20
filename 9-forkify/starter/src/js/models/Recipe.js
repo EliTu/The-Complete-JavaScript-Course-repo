@@ -72,9 +72,8 @@ export default class Recipe {
 
                 let count;
                 if (arrCount.length === 1) {
-                    count = fractionStrToDecimal(ingredientArr[0].replace('-', '+'));
+                    count = Number(fractionStrToDecimal(ingredientArr[0].replace('-', '+')));
                 } else {
-                    console.log(ingredientArr.slice(0, unitIndex));
                     const integer = Number(ingredientArr.slice(0, unitIndex)[0]);
                     const decimal = fractionStrToDecimal(ingredientArr.slice(0, unitIndex)[1]);
 

@@ -27,6 +27,15 @@ export const clearResults = () => {
     elements.searchResultPages.innerHTML = '';
 };
 
+export const highlightSelectedItem = (id) => {
+    // Before selecting, remove the highlighted class on every item:
+    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+    resultsArr.forEach(el => el.classList.remove('results__link--active'));
+
+    // Add the highlight class to a selected item:
+    document.querySelector(`a[href="#${id}"]`).classList.add('results__link--active');
+};
+
 // Set the recipe title name to ... if over 17 characters long:
 const limitRecipeTitle = (recipeTitle, limit = 17) => {
     // Array to hold split strings.
