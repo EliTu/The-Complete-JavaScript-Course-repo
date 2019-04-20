@@ -107,7 +107,6 @@ export default class Recipe {
                     ingredient,
                 };
             }
-            console.log(objIngredient);
             return objIngredient;
         });
         this.ingredients = newIngredients;
