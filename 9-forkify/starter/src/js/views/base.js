@@ -6,6 +6,7 @@ export const elements = {
     resultsContainer: document.querySelector('.results'),
     searchResultPages: document.querySelector('.results__pages'),
     recipeContainer: document.querySelector('.recipe'),
+    shoppingListContainer: document.querySelector('.shopping__list'),
 };
 
 // Object that contains all of the relevant DOM element strings:
