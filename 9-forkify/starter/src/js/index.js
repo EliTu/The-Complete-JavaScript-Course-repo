@@ -4,6 +4,7 @@ import Recipe from './models/Recipe';
 import List from './models/List';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
 import {
     elements,
     renderLoader,
@@ -20,7 +21,7 @@ const state = {
     TODO - Liked recipe
     */
 };
-
+window.state = state;
 /*
  * Search Controller:
  */
@@ -106,6 +107,39 @@ const controlRecipe = async () => {
     }
 };
 
+/*
+ * List controller:
+ */
+const controlList = () => {
+    // If there is no new list, create a new one
+    if (!state.list) state.list = new List();
+
+    // Add each ingredient to the list
+    state.recipe.ingredients.forEach((ingredient) => {
+        const item = state.list.addItem(ingredient.count, ingredient.unit, ingredient.ingredient);
+        listView.renderItem(item);
+    });
+};
+
+// Event listeners for the shopping list delete button and update:
+elements.shoppingListContainer.addEventListener('click', (e) => {
+    // Get the item ID
+    const id = e.target.closest('.shopping__item').dataset.itemid;
+
+    // Delete button event:
+    if (e.target.matches('.shopping__delete, .shopping__delete *')) {
+        // Delete from the state object:
+        state.list.deleteItem(id);
+        // Delete from the UI:
+        listView.deleteItem(id);
+    } else if (e.target.matches('.shopping__count-value')) {
+        // Get the value of the input field
+        const value = parseFloat(e.target.value);
+        // Update the count:
+        state.list.updateCount(id, value);
+    }
+});
+
 // Add multiple events to the same element and function:
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
@@ -117,7 +151,7 @@ elements.recipeContainer.addEventListener('click', (e) => {
     } else if (e.target.matches('.btn-increase, .btn-increase *')) {
         state.recipe.updateServings('inc');
         recipeView.updateServingsAndIngredients(state.recipe);
+    } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
+        controlList();
     }
 });
-
-window.l = new List();
