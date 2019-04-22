@@ -2,6 +2,7 @@ import {
     elements,
 } from './base';
 
+// Create an HTML template for the shopping list:
 export const renderItem = (item) => {
     const shoppingListTemplate = `
                  <li class="shopping__item" data-itemid="${item.id}">
@@ -23,6 +24,12 @@ export const renderItem = (item) => {
     elements.shoppingListContainer.insertAdjacentHTML('beforeend', shoppingListTemplate);
 };
 
+// Remove a current list from the shopping list container:
+export const removeList = () => {
+    elements.shoppingListContainer.innerHTML = '';
+};
+
+// Remove a single item from the shopping list:
 export const deleteItem = (id) => {
     const item = document.querySelector(`[data-itemid="${id}"]`);
     if (item) item.remove();

@@ -143,7 +143,7 @@ elements.shoppingListContainer.addEventListener('click', (e) => {
 // Add multiple events to the same element and function:
 ['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
-// Event listeners for recipe '+' and '-' buttons:
+// Event listeners for recipe add button, and '+' / '-' buttons:
 elements.recipeContainer.addEventListener('click', (e) => {
     if (e.target.matches('.btn-decrease, .btn-decrease *')) {
         if (state.recipe.servings > 1) state.recipe.updateServings('dec');
@@ -152,6 +152,8 @@ elements.recipeContainer.addEventListener('click', (e) => {
         state.recipe.updateServings('inc');
         recipeView.updateServingsAndIngredients(state.recipe);
     } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
-        if (!state.list) controlList();
+        // fIRST Check for existing list and remove if found:
+        if (state.list) listView.removeList();
+        controlList();
     }
 });
