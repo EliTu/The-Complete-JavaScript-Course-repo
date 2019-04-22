@@ -24,7 +24,7 @@ export default class Likes {
 
     // Check if the recipe is already in the likes array by id:
     isLiked(id) {
-        return this.like.findIndex(el => el.id === id) !== -1;
+        return this.likes.findIndex(el => el.id === id) !== -1;
     }
 
     // Get the total number of liked items in the array:

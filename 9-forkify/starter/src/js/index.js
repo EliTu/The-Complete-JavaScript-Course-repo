@@ -2,6 +2,7 @@
 import Search from './models/Search';
 import Recipe from './models/Recipe';
 import List from './models/List';
+import Likes from './models/Likes';
 import * as searchView from './views/searchView';
 import * as recipeView from './views/recipeView';
 import * as listView from './views/listView';
@@ -9,21 +10,20 @@ import {
     elements,
     renderLoader,
     removeLoader,
-    elementStrings,
 } from './views/base';
 
 // The global state variable:
 const state = {
-    /* Global state of the app:
-    * Search object
-    * Current recpie object
-    TODO - Shopping list object
-    TODO - Liked recipe
-    */
+    /*
+     * Search object
+     * Current recpie object
+     * Shopping list object
+     * Liked recipe
+     */
 };
 window.state = state;
 /*
- * Search Controller:
+ * Search recipes Controller:
  */
 // Search input event listeners:
 const controlSearch = async (e) => {
@@ -70,7 +70,7 @@ elements.searchContainer.addEventListener('submit', controlSearch);
 elements.searchResultPages.addEventListener('click', moveToPage);
 
 /*
- * Recipe controller:
+ * Selected recipe controller:
  */
 const controlRecipe = async () => {
     // Get search item id from the URL:
@@ -108,7 +108,7 @@ const controlRecipe = async () => {
 };
 
 /*
- * List controller:
+ * Shoppin list controller:
  */
 const controlList = () => {
     // If there is no new list, create a new one
@@ -146,14 +146,51 @@ elements.shoppingListContainer.addEventListener('click', (e) => {
 // Event listeners for recipe add button, and '+' / '-' buttons:
 elements.recipeContainer.addEventListener('click', (e) => {
     if (e.target.matches('.btn-decrease, .btn-decrease *')) {
+        // Decrease amount button is pressed:
         if (state.recipe.servings > 1) state.recipe.updateServings('dec');
         recipeView.updateServingsAndIngredients(state.recipe);
     } else if (e.target.matches('.btn-increase, .btn-increase *')) {
+        // Increase amount button is pressed:
         state.recipe.updateServings('inc');
         recipeView.updateServingsAndIngredients(state.recipe);
     } else if (e.target.matches('.recipe__btn--add, .recipe__btn--add *')) {
-        // fIRST Check for existing list and remove if found:
+        // first Check for existing list and remove if found:
         if (state.list) listView.removeList();
+        // Add to the shopping list:
         controlList();
+    } else if (e.target.matches('.recipe__love, .recipe__love *')) {
+        // Add the recipe to the likes list:
+        controlLike();
     }
 });
+
+/*
+ * Liked recipe list controller:
+ */
+const controlLike = () => {
+    if (!state.likes) state.likes = new Likes();
+    const currentId = state.recipe.id;
+
+    // If user hasn't liked the current selected recipe:
+    if (!state.likes.isLiked(currentId)) {
+        // Add like to the state
+        const newLike = state.likes.addLike(
+            currentId,
+            state.recipe.title,
+            state.recipe.publisher,
+            state.recipe.image,
+        );
+
+        // Toggle the like button
+
+        // Add like to the UI list
+        console.log(state.likes);
+    } else {
+        // Remove the liked item from the state
+        state.likes.deleteLike(currentId);
+        // Toggle the like button
+
+        // Remove the like from the UI list
+        console.log(state.likes);
+    }
+};
