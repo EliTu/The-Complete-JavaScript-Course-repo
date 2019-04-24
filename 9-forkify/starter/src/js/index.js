@@ -73,9 +73,6 @@ elements.searchResultPages.addEventListener('click', moveToPage);
 /*
  * Selected recipe controller:
  */
-state.likes = new Likes();
-likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
-
 const controlRecipe = async () => {
     // Get search item id from the URL:
     const id = window.location.hash.replace('#', '');
@@ -202,3 +199,18 @@ const controlLike = () => {
     }
     likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
 };
+
+// Restore liked recipes from the localStorage on page load:
+window.addEventListener('load', () => {
+    // Create a new like object
+    state.likes = new Likes();
+
+    // Get the stored data from the localStorage
+    state.likes.getLocalStorageData();
+
+    // toggle the like button:
+    likesView.toggleLikeMenu(state.likes.getNumberOfLikes());
+
+    // render the existing likes:
+    state.likes.likes.forEach(like => likesView.renderLike(like));
+});

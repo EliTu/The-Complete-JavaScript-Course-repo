@@ -12,7 +12,12 @@ export default class Likes {
             author,
             img,
         };
+        // Push a new like to the likes array:
         this.likes.push(like);
+
+        // Store the liked items in the localStorage:
+        this.saveInLocalStorage();
+
         return like;
     }
 
@@ -20,6 +25,9 @@ export default class Likes {
     deleteLike(id) {
         const index = this.likes.findIndex(el => el.id === id);
         this.likes.splice(index, 1);
+
+        // Update the liked item list in the localStorage:
+        this.saveInLocalStorage();
     }
 
     // Check if the recipe is already in the likes array by id:
@@ -30,5 +38,19 @@ export default class Likes {
     // Get the total number of liked items in the array:
     getNumberOfLikes() {
         return this.likes.length;
+    }
+
+    // Store localStorage functionality:
+    saveInLocalStorage() {
+        // Store the likes array and turn in into a string:
+        localStorage.setItem('likes', JSON.stringify(this.likes));
+    }
+
+    // Get data from localStorage:
+    getLocalStorageData() {
+        // Get the stored data and parse it into JSON:
+        const storageData = JSON.parse(localStorage.getItem('likes'));
+        // If there is data stored in the localStorage, set it to the likes array:
+        if (storageData) this.likes = storageData;
     }
 }
