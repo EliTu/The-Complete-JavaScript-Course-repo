@@ -7,6 +7,8 @@ export const elements = {
     searchResultPages: document.querySelector('.results__pages'),
     recipeContainer: document.querySelector('.recipe'),
     shoppingListContainer: document.querySelector('.shopping__list'),
+    likesListContainer: document.querySelector('.likes__field'),
+    likesList: document.querySelector('.likes__list'),
 };
 
 // Object that contains all of the relevant DOM element strings:

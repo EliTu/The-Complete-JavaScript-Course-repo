@@ -37,7 +37,7 @@ export const highlightSelectedItem = (id) => {
 };
 
 // Set the recipe title name to ... if over 17 characters long:
-const limitRecipeTitle = (recipeTitle, limit = 17) => {
+export const limitRecipeTitle = (recipeTitle, limit = 17) => {
     // Array to hold split strings.
     const newTitle = [];
 
@@ -64,7 +64,7 @@ const renderRecipe = (recipe) => {
                     <a class="results__link" href="#${recipe.recipe_id}">
                         <figure class="results__fig">
                             <img src="${recipe.image_url}"
-                            alt = "${recipe.title}" >
+                            alt="${recipe.title}" >
                         </figure>
                         <div class="results__data">
                             <h4 class="results__name">${limitRecipeTitle(recipe.title)}</h4>

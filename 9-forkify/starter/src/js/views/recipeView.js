@@ -40,7 +40,7 @@ const createIngredient = ingredient => `
 `;
 
 // Create the recipe HTML template:
-export const renderRecipe = (recipe) => {
+export const renderRecipe = (recipe, isLiked) => {
     const template = `<figure class="recipe__fig">
                 <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img">
                 <h1 class = "recipe__title">
@@ -78,7 +78,7 @@ export const renderRecipe = (recipe) => {
                 </div>
                 <button class="recipe__love">
                     <svg class="header__likes">
-                        <use href="img/icons.svg#icon-heart-outlined"></use>
+                        <use href="img/icons.svg#icon-heart${isLiked ? '' : '-outlined'}"></use>
                     </svg>
                 </button>
             </div>
