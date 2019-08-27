@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Course Material and FAQ for my Complete JavaScript Course
 
 This repo contains starter files and the finished project files for all the projects contained in the course.
@@ -47,3 +48,7 @@ Plus, I made all the course slides available for download, to make it easier to 
 ### Q10: How do I get my certificate of completion?
 
 **A:** A certificate of completion is provided by Udemy after you complete 100% of the course. After completing the course, just click on the small trophy icon on the course overview page. If you want to change your name on the certificate, please [contact the Udemy support team](https://support.udemy.com/hc/en-us).
+=======
+# The-Complete-JavaScript-Course-repo
+This is the repo for the code from "The Complete JavaScript Course 2019" by Jonas Schmedtmann
+>>>>>>> 11e8ca956fd18e66cf9d928856790dcd7d8bf2bb
