@@ -22,10 +22,11 @@ const state = {
      * Liked recipe
      */
 };
-window.state = state;
+
 /*
  * Search recipes Controller:
  */
+
 // Search input event listeners:
 const controlSearch = async (e) => {
     // Prevent the page from reloading upon pressing the search button:
@@ -73,6 +74,7 @@ elements.searchResultPages.addEventListener('click', moveToPage);
 /*
  * Selected recipe controller:
  */
+
 const controlRecipe = async () => {
     // Get search item id from the URL:
     const id = window.location.hash.replace('#', '');
@@ -109,8 +111,9 @@ const controlRecipe = async () => {
 };
 
 /*
- * Shoppin list controller:
+ * Shopping list controller:
  */
+
 const controlList = () => {
     // If there is no new list, create a new one
     if (!state.list) state.list = new List();
@@ -168,6 +171,7 @@ elements.recipeContainer.addEventListener('click', (e) => {
 /*
  * Liked recipe list controller:
  */
+
 const controlLike = () => {
     if (!state.likes) state.likes = new Likes();
     const currentId = state.recipe.id;

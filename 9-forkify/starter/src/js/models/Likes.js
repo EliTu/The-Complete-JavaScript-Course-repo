@@ -50,6 +50,7 @@ export default class Likes {
     getLocalStorageData() {
         // Get the stored data and parse it into JSON:
         const storageData = JSON.parse(localStorage.getItem('likes'));
+
         // If there is data stored in the localStorage, set it to the likes array:
         if (storageData) this.likes = storageData;
     }

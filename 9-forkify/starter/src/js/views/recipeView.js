@@ -15,13 +15,14 @@ export const clearRecipe = () => elements.recipeContainer.innerHTML = '';
 const formatCount = (count) => {
     if (count) {
         // Parse the number to a string, split it at the decimal and then convert it back to a number:
-        const [int, dec] = count.toString().split('.').map(el => parseInt(el, 10));
-        if (!dec) return count;
+        const newCount = Math.round(count * 10000) / 10000;
+        const [int, dec] = newCount.toString().split('.').map(el => parseInt(el, 10));
+        if (!dec) return newCount;
         if (int === 0) {
-            const fraction = new Fraction(count);
+            const fraction = new Fraction(newCount);
             return `${fraction.numerator}/${fraction.denominator}`;
         }
-        const fraction = new Fraction(count - int);
+        const fraction = new Fraction(newCount - int);
         return `${int} ${fraction.numerator}/${fraction.denominator}`;
     }
     return '';
